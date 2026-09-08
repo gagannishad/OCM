@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <!-- TOTAL LOCKOUT: Disables zooming and scaling completely -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>OCM Subject | Best of Luck</title>
+    <meta name="theme-color" content="#F9F5FF">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           GLOBAL SECURITY & CSS RESET
+           ========================================= */
+        :root {
+            --bg-page: #F9F5FF; /* Light Purple Theme */
+            --nav-bg: rgba(255, 255, 255, 0.85); 
+            --card-bg: #FFFFFF;
+            --text-main: #2E1065; /* Deep Purple */
+            --text-muted: #6B21A8;
+            --purple-primary: #9333EA; 
+            --purple-light: rgba(147, 51, 234, 0.08);
+            --divider: rgba(147, 51, 234, 0.15);
+        }
+
+        /* Prevent Text Selection and Highlighting */
+        *, *::before, *::after { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        a { -webkit-user-drag: none; }
+
+        body {
+            width: 100%; 
+            min-height: 100vh;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Poppins", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+
+        /* =========================================
+           MAIN WEBSITE LAYOUT
+           ========================================= */
+        @keyframes slideUpFade {
+            0% { opacity: 0; transform: translateY(30px) scale(0.98); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        @keyframes pulseSoft {
+            0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0.4); }
+            70% { transform: scale(1.02); box-shadow: 0 0 0 8px rgba(147, 51, 234, 0); }
+            100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(147, 51, 234, 0); }
+        }
+        @keyframes floatCard {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-5px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* Navigation[cite: 1] */
+        nav {
+            position: sticky; top: 0; width: 100%; height: 65px;
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 24px; z-index: 1000;
+            border-bottom: 1px solid var(--divider);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04); 
+            animation: slideUpFade 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .nav-brand { font-size: 20px; font-weight: 700; color: var(--purple-primary); letter-spacing: -0.01em; }
+        
+        .hamburger { width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 1002; }
+        .hamburger span { display: block; height: 2.5px; width: 100%; background-color: var(--purple-primary); border-radius: 3px; transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); transform-origin: left center; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(1px, -1px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(1px, 1px); }
+
+        .mobile-menu {
+            position: absolute; top: 75px; right: 20px; width: 250px;
+            background-color: var(--card-bg); border-radius: 16px;
+            box-shadow: 0 10px 40px rgba(147, 51, 234, 0.15), 0 4px 15px rgba(0, 0, 0, 0.05);
+            border: 1px solid var(--divider); padding: 10px; display: flex; flex-direction: column;
+            transform-origin: top right; transform: scale(0.8) translateY(-20px); opacity: 0; visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); z-index: 1001;
+        }
+        .mobile-menu.open { transform: scale(1) translateY(0); opacity: 1; visibility: visible; }
+        .mobile-menu a {
+            text-decoration: none; color: var(--text-main); font-size: 16px; font-weight: 600;
+            padding: 12px 16px; border-radius: 10px; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .mobile-menu a:active, .mobile-menu a:hover { background-color: var(--purple-light); color: var(--purple-primary); transform: translateX(5px); }
+
+        /* Main Content Wrappers */
+        .main-wrapper { max-width: 800px; margin: 0 auto; padding: 40px 24px; flex: 1; width: 100%; }
+
+        .hero-card, .section-syllabus, .section-pattern, .guidance-section { opacity: 0; animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        .hero-card { animation-delay: 0.1s; } .section-syllabus { animation-delay: 0.3s; }
+        .section-pattern { animation-delay: 0.5s; } .guidance-section { animation-delay: 0.7s; }
+
+        /* Hero Header Card[cite: 1] */
+        .hero-card {
+            background-color: var(--card-bg); border-radius: 20px; padding: 40px 30px; text-align: center; margin-bottom: 50px;
+            box-shadow: 0 8px 30px rgba(147, 51, 234, 0.08); border: 1px solid var(--divider);
+            animation: slideUpFade 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards, floatCard 6s ease-in-out infinite alternate;
+        }
+        .college-name { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 15px; }
+        .hero-card h1 { font-size: 30px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 5px; color: var(--text-main); }
+        .hero-card h2 { font-size: 24px; font-weight: 600; color: var(--purple-primary); margin-bottom: 20px; }
+        .exam-info { font-size: 18px; font-weight: 500; color: var(--text-main); margin-bottom: 15px; }
+        .exam-date { display: inline-block; background-color: var(--purple-light); color: var(--purple-primary); font-size: 15px; font-weight: 700; padding: 10px 20px; border-radius: 30px; animation: pulseSoft 2.5s infinite; }
+
+        section { margin-bottom: 50px; }
+        .section-title { font-size: 26px; font-weight: 700; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid var(--divider); }
+
+        /* iOS Inspired Lists[cite: 1] */
+        .ios-list { list-style: none; width: 100%; background-color: var(--card-bg); border-radius: 16px; padding: 0 20px; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.03); border: 1px solid var(--divider); overflow: hidden; }
+        .ios-list li { display: flex; justify-content: space-between; align-items: center; padding: 18px 10px; border-bottom: 1px solid rgba(0,0,0,0.04); font-size: 16px; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s ease; cursor: default; }
+        .ios-list li:hover { transform: translateX(8px); background-color: var(--purple-light); border-radius: 8px; }
+        .ios-list li:last-child { border-bottom: none; }
+        .list-title { font-weight: 500; flex: 1; transition: color 0.3s ease; }
+        .ios-list li:hover .list-title { color: var(--purple-primary); }
+        .list-value { color: var(--purple-primary); font-weight: 600; text-align: right; flex: 1; line-height: 1.4; padding-left: 20px; }
+
+        .meta-info { display: flex; justify-content: space-between; font-size: 15px; color: var(--text-muted); margin-bottom: 15px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; padding: 0 5px; }
+
+        /* Quick Navigation Grid - Strict 2 Per Line */
+        .guidance-section { background-color: transparent; margin-top: 30px; }
+        .nav-grid { 
+            display: grid; 
+            grid-template-columns: repeat(2, 1fr); /* Enforces exactly 2 columns on ALL devices */
+            gap: 15px; 
+            margin-top: 15px; 
+        }
+        .nav-card { background-color: var(--card-bg); border: 1px solid var(--divider); border-radius: 16px; padding: 20px 10px; text-align: center; text-decoration: none; color: var(--text-main); font-weight: 600; font-size: 14px; box-shadow: 0 4px 12px rgba(147, 51, 234, 0.03); transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); position: relative; overflow: hidden; }
+        .nav-card:hover, .nav-card:active { transform: translateY(-5px) scale(1.02); border-color: var(--purple-primary); color: var(--purple-primary); box-shadow: 0 12px 25px rgba(147, 51, 234, 0.15); }
+
+        footer { text-align: center; padding: 24px; font-size: 15px; color: var(--text-muted); border-top: 1px solid var(--divider); font-weight: 500; margin-top: auto; background-color: var(--card-bg); animation: slideUpFade 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; animation-delay: 0.9s; }
+    </style>
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-brand">OCM Commerce Subject</div>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" style="color: var(--purple-primary);" onclick="toggleMenu()">Syllabus Pattern</a>
+            <a href="chapter2.html" onclick="toggleMenu()">Chapter 2</a>
+            <a href="chapter4.html" onclick="toggleMenu()">Chapter 4</a>
+            <a href="chapter8.html" onclick="toggleMenu()">Chapter 8</a>
+            <a href="practice1.html" onclick="toggleMenu()">Practice Paper 1</a>
+            <a href="practice2.html" onclick="toggleMenu()">Practice Paper 2</a>
+            <a href="practice3.html" onclick="toggleMenu()">Practice Paper 3</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <!-- Hero Header -->
+        <div class="hero-card">
+            <div class="college-name">Nirmala Memorial Foundation College of Commerce and Science</div>
+            <h1>SYJC Commerce</h1>
+            <h2>Organisation of Commerce and Management</h2>
+            <div class="exam-info">2<sup>nd</sup> Monthly Test</div>
+            <div class="exam-date">Date: 9 September 2026</div>
+        </div>
+
+        <!-- Syllabus Data from image_10a000.jpg -->
+        <section class="section-syllabus">
+            <h3 class="section-title">Syllabus</h3>
+            <ul class="ios-list">
+                <li><span class="list-title">Chapter 2</span><span class="list-value">Functions of Management</span></li>
+                <li><span class="list-title">Chapter 4</span><span class="list-value">Business Services</span></li>
+                <li><span class="list-title">Chapter 8</span><span class="list-value">Marketing</span></li>
+            </ul>
+        </section>
+
+        <!-- Paper Pattern Data from image_10a000.jpg -->
+        <section class="section-pattern">
+            <h3 class="section-title">Paper Pattern</h3>
+            <div class="meta-info">
+                <span>Time: 2 HOURS</span>
+                <span>Marks: 50</span>
+            </div>
+            <ul class="ios-list">
+                <li><span class="list-title">Q.1 A. State true or false.</span><span class="list-value">05 M</span></li>
+                <li><span class="list-title">Q.1 B. Find the odd ones.</span><span class="list-value">05 M</span></li>
+                <li><span class="list-title">Q.2 Explain the following terms/concepts (Any 5/6)</span><span class="list-value">10 M</span></li>
+                <li><span class="list-title">Q.3 Study the following case/situation and express your opinion (Any 2/3)</span><span class="list-value">06 M</span></li>
+                <li><span class="list-title">Q.4 Distinguish between (Any 4/5)</span><span class="list-value">16 M</span></li>
+                <li><span class="list-title">Q.5 Answer the following (Any 1/2)</span><span class="list-value">08 M</span></li>
+            </ul>
+        </section>
+
+        <!-- Quick Access Navigation (Forced 2-in-one-line Grid) -->
+        <section class="guidance-section">
+            <h3 class="section-title" style="font-size: 22px;">Quick Access</h3>
+            <div class="nav-grid">
+                <a href="index.html" class="nav-card">Syllabus Pattern</a>
+                <a href="chapter2.html" class="nav-card">Chapter 2</a>
+                
+                <a href="chapter4.html" class="nav-card">Chapter 4</a>
+                <a href="chapter8.html" class="nav-card">Chapter 8</a>
+                
+                <a href="practice1.html" class="nav-card">Practice Paper 1</a>
+                <a href="practice2.html" class="nav-card">Practice Paper 2</a>
+                
+                <a href="practice3.html" class="nav-card">Practice Paper 3</a>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        Created by Gagan Nishad
+    </footer>
+
+    <!-- ================= JAVASCRIPT FOR UI & SECURITY ================= -->
+    <script>
+        // --- 1. MENU NAVIGATION LOGIC[cite: 1] ---
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburger');
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target) && mobileMenu.classList.contains('open')) {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // --- 2. STRICT SECURITY & UX RESTRICTIONS[cite: 1] ---
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('copy', event => event.preventDefault());
+        document.addEventListener('cut', event => event.preventDefault());
+        document.addEventListener('paste', event => event.preventDefault());
+
+        document.addEventListener('keydown', function(e) {
+            // Prevent F12 / Print Screen
+            if (e.key === "F12" || e.keyCode === 44) {
+                e.preventDefault(); return false;
+            }
+            // Prevent zooming (Ctrl++, Ctrl+-) and saving (Ctrl+S)
+            if (e.ctrlKey || e.metaKey) {
+                const key = e.key.toLowerCase();
+                if (['c', 'a', 'x', 'v', 'p', 'u', 's', 'i', '+', '-', '='].includes(key)) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        // Prevent pinch zoom and wheel zoom[cite: 1]
+        document.addEventListener('wheel', function(e) {
+            if (e.ctrlKey || e.metaKey) e.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(event) {
+            if (event.scale !== 1 && event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) event.preventDefault();
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
