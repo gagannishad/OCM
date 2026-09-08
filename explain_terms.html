@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>3. Explain Terms | OCM Study Portal</title>
+    <meta name="theme-color" content="#F9F5FF">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           GLOBAL SECURITY & FLAT CSS RESET (NO SHADOWS, NO BOXES)
+           ========================================= */
+        :root {
+            --bg-page: #F9F5FF; 
+            --nav-bg: rgba(249, 245, 255, 0.95); 
+            --text-main: #2E1065; 
+            --text-muted: #6B21A8;
+            --purple-primary: #9333EA; 
+            --purple-light: rgba(147, 51, 234, 0.12);
+            --divider: rgba(147, 51, 234, 0.25);
+        }
+
+        *, *::before, *::after { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            width: 100%; 
+            min-height: 100vh;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Poppins", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation - FLAT DESIGN */
+        nav {
+            position: sticky; top: 0; width: 100%; height: 65px;
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 24px; z-index: 1000;
+            border-bottom: 1px solid var(--divider);
+        }
+        .nav-brand { font-size: 20px; font-weight: 700; color: var(--purple-primary); letter-spacing: -0.01em; }
+        
+        .hamburger { width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 1002; }
+        .hamburger span { display: block; height: 2.5px; width: 100%; background-color: var(--purple-primary); border-radius: 3px; transition: all 0.4s ease; transform-origin: left center; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(1px, -1px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(1px, 1px); }
+
+        .mobile-menu {
+            position: absolute; top: 75px; right: 20px; width: 250px;
+            background-color: var(--bg-page); border-radius: 16px;
+            border: 1px solid var(--divider); padding: 10px; display: flex; flex-direction: column;
+            transform-origin: top right; transform: scale(0.8) translateY(-20px); opacity: 0; visibility: hidden;
+            transition: all 0.4s ease; z-index: 1001;
+        }
+        .mobile-menu.open { transform: scale(1) translateY(0); opacity: 1; visibility: visible; }
+        .mobile-menu a {
+            text-decoration: none; color: var(--text-main); font-size: 15px; font-weight: 600;
+            padding: 12px 16px; border-radius: 10px; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .mobile-menu a:active, .mobile-menu a:hover { background-color: var(--purple-light); color: var(--purple-primary); transform: translateX(5px); }
+
+        /* Main Content - Merged with screen, NO BOXES */
+        .main-wrapper { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; flex: 1; width: 100%; }
+
+        .page-header {
+            text-align: left; margin-bottom: 40px;
+            border-bottom: 3px solid var(--purple-primary);
+            padding-bottom: 15px;
+        }
+        .page-header h1 { font-size: 32px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; }
+        .page-header p { font-size: 16px; color: var(--text-muted); font-weight: 500; }
+
+        /* Section Headings */
+        .part-heading {
+            font-size: 28px; color: var(--text-main); 
+            margin-top: 50px; margin-bottom: 10px; 
+            font-weight: 800;
+        }
+        
+        .chapter-heading {
+            font-size: 22px; color: var(--purple-primary);
+            margin-top: 30px; margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Term List - Flat text */
+        .term-list { list-style: none; padding: 0; margin-bottom: 40px; }
+        .term-list li {
+            padding: 15px 0;
+            border-bottom: 1px dashed var(--divider);
+            font-size: 15px;
+            line-height: 1.7;
+            color: #333;
+        }
+        .term-list li:last-child { border-bottom: none; }
+        .term-title { font-weight: 700; color: var(--text-main); font-size: 17px; margin-right: 5px; }
+        
+        /* SVG Back to Top Arrow - Extreme Bottom Right, NO SHADOW */
+        #backToTop {
+            position: fixed; bottom: 15px; right: 15px; width: 45px; height: 45px;
+            background-color: var(--purple-primary); color: white; border: none;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            z-index: 2000; cursor: pointer;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #backToTop svg {
+            width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        footer { text-align: center; padding: 24px; font-size: 15px; color: var(--text-muted); border-top: 1px solid var(--divider); font-weight: 500; margin-top: auto; background-color: transparent; }
+    </style>
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+
+    <!-- Navigation Menu (8 Links) -->
+    <nav>
+        <div class="nav-brand">OCM Study Portal</div>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" onclick="toggleMenu()">Syllabus & Pattern</a>
+            <a href="true_false.html" onclick="toggleMenu()">1. True or False</a>
+            <a href="odd_one.html" onclick="toggleMenu()">2. Find the Odd One</a>
+            <a href="explain_terms.html" style="color: var(--purple-primary);" onclick="toggleMenu()">3. Explain Terms</a>
+            <a href="case_study.html" onclick="toggleMenu()">4. Case Studies</a>
+            <a href="distinguish.html" onclick="toggleMenu()">5. Distinguish Between</a>
+            <a href="answer_following.html" onclick="toggleMenu()">6. Answer the Following</a>
+            <a href="practice_paper1.html" onclick="toggleMenu()">Practice Paper 1</a>
+            <a href="practice_paper2.html" onclick="toggleMenu()">Practice Paper 2</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <div class="page-header">
+            <h1>Explain the Following Terms</h1>
+            <p>Complete Textbook Exercises & 160+ Extensive Custom Terms from Chapters 2, 4, and 8</p>
+        </div>
+
+        <!-- ================= TEXTBOOK EXERCISES SECTION ================= -->
+        <h2 class="part-heading">PART A: Textbook Exercises</h2>
+
+        <h3 class="chapter-heading">Chapter 2: Functions of Management</h3>
+        <ul class="term-list">
+            <li><span class="term-title">1. Management:</span> A set of principles which relate to the various functions such as planning, organizing, staffing, directing, coordinating, and controlling which are helpful in achieving organizational goals.</li>
+            <li><span class="term-title">2. Planning:</span> The basic, fundamental function of management that involves deciding in advance what to do, how to do it, when to do it, and who is to do it. It is an intellectual process of logical thinking.</li>
+            <li><span class="term-title">3. Organizing:</span> The process of defining and grouping the activities of the enterprise, bringing required resources together (men, money, material, machine), and establishing authority relationships among them.</li>
+            <li><span class="term-title">4. Staffing:</span> The function of execution according to the organizational structure. It pertains to the recruitment, selection, development, training, and compensation of the workforce.</li>
+            <li><span class="term-title">5. Directing:</span> The process of instructing, guiding, communicating, inspiring, motivating, and supervising the employees to achieve predetermined goals. It is the life spark of an enterprise.</li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 4: Business Services</h3>
+        <ul class="term-list">
+            <li><span class="term-title">6. Transport:</span> The movement of people, animals, and goods from one location to another, functioning as a means of carrying items and individuals across distances.</li>
+            <li><span class="term-title">7. Communication:</span> An art of exchanging ideas, facts, and information from one person or entity to another using various mediums.</li>
+            <li><span class="term-title">8. Banking:</span> A financial service involving an institution that deals with accepting deposits for the purpose of lending or investment, repayable on demand or otherwise.</li>
+            <li><span class="term-title">9. Insurance:</span> A contract and means of protection from financial loss where the insurer agrees to compensate the insured against contingent or uncertain losses for a premium.</li>
+            <li><span class="term-title">10. Warehousing:</span> An establishment and group of activities connected with the safe storing, accumulating, and preserving of goods from the time of production till consumption.</li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 8: Marketing</h3>
+        <ul class="term-list">
+            <li><span class="term-title">11. Market:</span> Derived from the Latin word 'mercatus', it means to trade or a place where business is transacted involving buyers, sellers, and the exchange of goods for money.</li>
+            <li><span class="term-title">12. Place Concept of Market:</span> The common understanding of a market as a specific physical geographic location where buyers and sellers meet to exchange goods.</li>
+            <li><span class="term-title">13. Commodity Concept of Market:</span> A concept that places emphasis strictly on the buying and selling of specific goods or services, regardless of the physical place of exchange.</li>
+            <li><span class="term-title">14. Digital Concept of Market:</span> Also known as Space Market, it uses Information Technology (E-Commerce portals, mobile apps) for buying, selling, and communicating product features.</li>
+            <li><span class="term-title">15. Product:</span> Goods or services that are offered to customers for sale, capable of satisfying a customer's needs. It can be tangible or intangible.</li>
+            <li><span class="term-title">16. Price:</span> The specific monetary amount that a customer pays for a product, acting as a crucial factor in creating demand and determining profitability.</li>
+            <li><span class="term-title">17. Promotion:</span> An element of the marketing mix involving tools like advertising and personal selling to communicate product features and encourage customers to buy.</li>
+            <li><span class="term-title">18. Marketing Mix:</span> The combination of different marketing variables (Product, Price, Place, Promotion) that a firm blends and controls to achieve desired results from a target market.</li>
+            <li><span class="term-title">19. Packaging:</span> The process of designing and creating wrappers, containers, or boxes to protect the product from damage and act as an attractive promotional tool.</li>
+            <li><span class="term-title">20. Labeling:</span> The process of providing a slip on the product that contains all critical, necessary information regarding the product and its producer.</li>
+        </ul>
+
+        <!-- ================= EXTENSIVE EXTRA TERMS SECTION ================= -->
+        <h2 class="part-heading" style="margin-top: 60px;">PART B: 140+ Extensive Exam Concepts</h2>
+
+        <h3 class="chapter-heading">Chapter 2: Functions of Management</h3>
+        <ul class="term-list">
+            <li><span class="term-title">21. Controlling:</span> The process of comparing the actual performance with the predetermined standard performance, measuring deviations, and taking corrective steps.</li>
+            <li><span class="term-title">22. POSDCORB:</span> A keyword coined by Luther Gullick for management functions: Planning, Organizing, Staffing, Directing, Co-ordination, Reporting, and Budgeting.</li>
+            <li><span class="term-title">23. Co-ordinating:</span> The integration and synchronization of the efforts of a group to provide unity of action, acting as a hidden force binding all functions.</li>
+            <li><span class="term-title">24. Forecasting:</span> A vital technique used during planning that looks into the future to anticipate changes and uncertainties to prepare preventive measures.</li>
+            <li><span class="term-title">25. Delegation:</span> The assignment of specific activities and the provision of adequate authority to appropriate departments or managers.</li>
+            <li><span class="term-title">26. Specialization:</span> The outcome of dividing work into distinct units in the organizing function, which increases the overall efficiency and expertise of an organization.</li>
+            <li><span class="term-title">27. Human Resource Development:</span> Achieved heavily through the staffing function, it involves training and developing existing employees to treat them as an asset.</li>
+            <li><span class="term-title">28. Team Spirit:</span> A sense of mutual co-operation and group effort fostered largely by directing and coordinating, vital for organizational success over individual efforts.</li>
+            <li><span class="term-title">29. Deviation:</span> The difference or gap found during the controlling function when the actual performance does not align with the standard target.</li>
+            <li><span class="term-title">30. Standard Performance:</span> Predetermined benchmarks set during the planning phase against which the actual performance is measured during controlling.</li>
+            <li><span class="term-title">31. Preventive Measures:</span> Actions decided in advance during planning to tackle anticipated future risks and uncertainties.</li>
+            <li><span class="term-title">32. Optimal Utilization of Resources:</span> Using all physical, financial, and human resources (men, money, machine) at their best capacity to avoid wastage.</li>
+            <li><span class="term-title">33. Appraising:</span> A step in the staffing process involving the regular evaluation of employee performance to grant promotions and merits.</li>
+            <li><span class="term-title">34. Instructing:</span> A core element of directing where managers issue clear orders and procedures to subordinates.</li>
+            <li><span class="term-title">35. Corrective Action:</span> The final step in the controlling process implemented to fix deviations and ensure future alignment with goals.</li>
+            <li><span class="term-title">36. Unity of Action:</span> Brought about by co-ordination, ensuring all departments harmonize their varied activities toward one common organizational goal.</li>
+            <li><span class="term-title">37. Top Level Management:</span> The level of management primarily responsible for setting core organizational goals and drafting ultimate plans.</li>
+            <li><span class="term-title">38. Psychological Pressure:</span> The awareness among employees that their performance will be evaluated in the controlling function, acting as a motivation to perform better.</li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 4: Business Services</h3>
+        <ul class="term-list">
+            <li><span class="term-title">39. Services:</span> Intangible, instantly perishable acts or performances offered for sale that do not result in the ownership of anything.</li>
+            <li><span class="term-title">40. Intangibility:</span> The characteristic of services indicating they lack material physical form and cannot be touched or seen.</li>
+            <li><span class="term-title">41. Inseparability:</span> The characteristic where the production and consumption of a service take place at the exact same time and cannot be separated from the provider.</li>
+            <li><span class="term-title">42. Inconsistency:</span> The heterogeneous nature of services meaning quality may differ from time to time and perfect standardization is impossible.</li>
+            <li><span class="term-title">43. Perishability:</span> The inability to store services as an inventory for future sale or use.</li>
+            <li><span class="term-title">44. Non-transferability:</span> The characteristic indicating that the ownership of a service cannot be transferred to the customer.</li>
+            <li><span class="term-title">45. Central Bank:</span> The apex financial institution of a country (like RBI) that issues currency notes and acts as a banker to the government.</li>
+            <li><span class="term-title">46. Commercial Bank:</span> A bank that operates for profit by performing primary functions of accepting deposits and granting loans to individuals and industries.</li>
+            <li><span class="term-title">47. Co-operative Bank:</span> Banks working at village, district, and state levels aimed at providing credit to farmers and economically backward people.</li>
+            <li><span class="term-title">48. Industrial Development Bank:</span> Institutions providing medium and long-term funds to business firms for expansion and modernization (e.g., IFCI, SFC).</li>
+            <li><span class="term-title">49. Exchange Bank:</span> Banks that facilitate foreign exchange transactions and finance foreign trade by issuing letters of credit.</li>
+            <li><span class="term-title">50. Regional Rural Bank (RRB):</span> Banks sponsored by large public sector banks to mobilize rural deposits and provide loans to marginal farmers.</li>
+            <li><span class="term-title">51. Investment Bank:</span> Banks providing financial and advisory assistance (like mergers and acquisitions) to corporate clients, without directly dealing with the public.</li>
+            <li><span class="term-title">52. EXIM Bank:</span> Export and Import Bank, providing principal financial assistance for coordinating and promoting the country's international trade.</li>
+            <li><span class="term-title">53. SIDBI:</span> Small Industries Development Bank of India, the principal institution for the promotion and financing of the MSME sector.</li>
+            <li><span class="term-title">54. NABARD:</span> An apex institution concerned with policy planning and financing agricultural operations and rural development through other banks.</li>
+            <li><span class="term-title">55. Payment Bank:</span> A newer model of banking offering remittance services and limited deposits (up to Rs. 1 lakh) but legally prohibited from issuing loans or credit cards.</li>
+            <li><span class="term-title">56. Fixed Deposit:</span> A time deposit account where a fixed sum is kept for a predetermined period bearing a high, fixed interest rate.</li>
+            <li><span class="term-title">57. Recurring Deposit:</span> An account for individuals with regular income where a fixed sum is deposited monthly, earning a high interest rate until maturity.</li>
+            <li><span class="term-title">58. Saving Account:</span> A demand deposit account meant to encourage the habit of maximum savings among people earning regular salaries.</li>
+            <li><span class="term-title">59. Current Account:</span> A demand deposit account operated by business firms with no restrictions on transactions and no interest paid, but offering an overdraft facility.</li>
+            <li><span class="term-title">60. Cash Credit:</span> A short-term advance provided to current and savings account holders to meet longer working capital requirements.</li>
+            <li><span class="term-title">61. Overdraft:</span> A temporary facility offered strictly to current account holders allowing them to withdraw more than their actual balance.</li>
+            <li><span class="term-title">62. Discounting of Bills:</span> An advance where the drawer of a bill of exchange can obtain funds from a bank at a discount before the due date.</li>
+            <li><span class="term-title">63. Portfolio Management:</span> An agency function where large commercial banks purchase and sell securities on behalf of their clients.</li>
+            <li><span class="term-title">64. Dematerialisation:</span> A facility provided by banks to hold and electronically transfer a client's shares and securities in an electronic format.</li>
+            <li><span class="term-title">65. E-banking:</span> Virtual banking where banking operations are completely computerized.</li>
+            <li><span class="term-title">66. ATM:</span> Automated Teller Machine, operated by customers to electronically withdraw or deposit money at any time.</li>
+            <li><span class="term-title">67. Credit Card:</span> A payment card where the issuing bank creates a revolving account and grants a line of credit to the user.</li>
+            <li><span class="term-title">68. Debit Card:</span> A card where payments made by the user are immediately deducted directly from the account holder's available bank balance.</li>
+            <li><span class="term-title">69. RTGS:</span> Real Time Gross Settlement, the fastest money transfer system where funds settle individually on a real-time basis.</li>
+            <li><span class="term-title">70. NEFT:</span> National Electronic Fund Transfer, a system where transactions are bundled and settled in half-hourly batches on a deferred net basis.</li>
+            <li><span class="term-title">71. Insured:</span> The person or entity who is financially protected against contingent losses (known as 'assured' in life insurance).</li>
+            <li><span class="term-title">72. Insurer:</span> The firm or company that agrees to compensate the insured against losses for a specific consideration.</li>
+            <li><span class="term-title">73. Premium:</span> The specific monetary consideration paid by the insured to the insurer on a timely basis for insurance coverage.</li>
+            <li><span class="term-title">74. Policy:</span> The official statement of contract between the insured and insurer containing all terms and conditions of coverage.</li>
+            <li><span class="term-title">75. Principle of Utmost Good Faith:</span> The rule requiring both the insurer and insured to completely and correctly disclose all material facts before signing the contract.</li>
+            <li><span class="term-title">76. Principle of Insurable Interest:</span> The requirement that the insured must suffer a direct financial loss from the destruction of the subject matter.</li>
+            <li><span class="term-title">77. Principle of Indemnity:</span> The guarantee to restore the insured strictly back to the exact same financial position they were in prior to the loss.</li>
+            <li><span class="term-title">78. Principle of Subrogation:</span> The rule transferring ownership of scrapped or recovered property to the insurer once full compensation has been paid.</li>
+            <li><span class="term-title">79. Principle of Contribution:</span> If multiple policies are taken, all insurers proportionately contribute to compensate only the actual loss amount.</li>
+            <li><span class="term-title">80. Principle of Mitigation of Loss:</span> The strict obligation of the insured to take all possible active measures to save their property during an incident.</li>
+            <li><span class="term-title">81. Principle of Causa-Proxima:</span> The rule stating that the nearest, most proximate direct cause of loss is considered to determine the insurer's liability.</li>
+            <li><span class="term-title">82. Whole Life Policy:</span> A life insurance policy covering the entire life of a person, paying out only upon the death of the insured to the nominee.</li>
+            <li><span class="term-title">83. Endowment Policy:</span> A life policy taken for a specific period, paying out upon maturity to the insured or upon death to the dependents.</li>
+            <li><span class="term-title">84. Term Insurance Policy:</span> A policy covering a specific period with the lowest premium, paying out only if the insured dies during the term.</li>
+            <li><span class="term-title">85. Annuity Policy:</span> A policy where the premium is paid as a lump sum, and the insured receives a specific periodic sum back, like a pension.</li>
+            <li><span class="term-title">86. Money-back Policy:</span> A policy providing regular percentage payouts of the sum assured during the lifetime, plus the full sum upon death.</li>
+            <li><span class="term-title">87. Voyage Policy:</span> A marine policy covering a vessel or cargo strictly for one specific voyage, irrespective of the time taken.</li>
+            <li><span class="term-title">88. Time Policy:</span> A marine policy insuring subject matter for a definite period, not exceeding one year.</li>
+            <li><span class="term-title">89. Valued Policy (Marine):</span> A policy where the exact value of goods is agreed upon beforehand to facilitate easy claims for items difficult to assess.</li>
+            <li><span class="term-title">90. Blanket Policy:</span> A marine policy taken for a maximum limit of protection covering multiple risks or properties under one initial premium.</li>
+            <li><span class="term-title">91. Port Risk Policy:</span> A marine policy covering all types of risks for a vessel while it is anchored safely at a specific port.</li>
+            <li><span class="term-title">92. Fleet Policy:</span> A marine policy where several ships belonging to one single owner are all insured together under the same policy.</li>
+            <li><span class="term-title">93. Average Policy:</span> A fire policy clause determining that if property is undervalued, the insurer only pays a proportionate percentage of the loss.</li>
+            <li><span class="term-title">94. Floating Policy:</span> A fire policy taken for one sum covering fluctuating quantities of goods lying across several different godowns or locations.</li>
+            <li><span class="term-title">95. Reinstatement Policy:</span> A fire policy where the insurer physically replaces the destroyed property instead of paying monetary compensation.</li>
+            <li><span class="term-title">96. Comprehensive Policy:</span> A policy that covers a multitude of major risks under a single umbrella, such as fire, floods, and explosions.</li>
+            <li><span class="term-title">97. Consequential Loss Policy:</span> A fire policy that provides indemnity for intangible financial losses, such as loss of net profits, following a disaster.</li>
+            <li><span class="term-title">98. Road Transport:</span> A flexible mode of transport connecting people on land surfaces, offering cheap and door-to-door service over short distances.</li>
+            <li><span class="term-title">99. Rail Transport:</span> A dependable mode of transport occupying an important place in carrying heavy, bulky goods and passengers over long land distances.</li>
+            <li><span class="term-title">100. Air Transport:</span> The fastest and relatively most expensive mode of transport utilizing aircraft, crucial during emergencies and cross-border travel.</li>
+            <li><span class="term-title">101. Water Transport:</span> The most economical mode of transport for bulky and heavy goods across oceans or inland waterways, utilizing natural routes.</li>
+            <li><span class="term-title">102. Monorail:</span> A rapid transit system in urban areas where the track consists of a single rail or beam, heavily avoiding street traffic jams.</li>
+            <li><span class="term-title">103. Pipeline Transport:</span> A transport network utilizing pipes to send liquids and gases (like water, sewage, or petroleum) over both short and long distances.</li>
+            <li><span class="term-title">104. Private Warehouses:</span> Storage facilities owned and operated exclusively by big manufacturers or merchants to fulfill their own heavy storage needs.</li>
+            <li><span class="term-title">105. Public Warehouses:</span> Specialized establishments working under government licenses providing storage facilities to the general public and small traders for a fee.</li>
+            <li><span class="term-title">106. Bonded Warehouses:</span> Warehouses licensed by the government specifically to securely store imported goods until the importer clears the custom duties.</li>
+            <li><span class="term-title">107. Duty Paid Warehouses:</span> Public warehouses usually located near docks used to store goods after customs duties are paid, often useful for re-exporting.</li>
+            <li><span class="term-title">108. Cold Storage Warehouses:</span> Warehouses refrigerated at very low temperatures designed to safely preserve highly perishable commodities like dairy and fruits.</li>
+            <li><span class="term-title">109. Inland Letter:</span> A specific postal communication on a folded sheet of paper ensuring message confidentiality for transmission strictly within India.</li>
+            <li><span class="term-title">110. Parcel Post:</span> A postal service allowing items of specified sizes to be sent across the country with optional insurance for safety.</li>
+            <li><span class="term-title">111. Business Post:</span> A service offering comprehensive mailing solutions including printing, collating, and inserting specifically for corporate companies.</li>
+            <li><span class="term-title">112. e-Post:</span> A postal service where a message is electronically transmitted via the internet and printed out as a hard copy for final physical delivery.</li>
+            <li><span class="term-title">113. Courier Service:</span> A premium delivery service provided by individuals or companies offering speed, tracking, and secure exchange of items.</li>
+            <li><span class="term-title">114. Internet:</span> A global interconnected system of computer networks using the TCP/IP protocol suite to link devices and facilitate digital communication.</li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 8: Marketing</h3>
+        <ul class="term-list">
+            <li><span class="term-title">115. Mercatus:</span> The Latin word origin of 'market', literally translating to 'trade' or a place where business is transacted.</li>
+            <li><span class="term-title">116. Exchange Concept of Market:</span> A concept viewing the market as an exchange of goods free from fraud, built upon mutual trust and free consent.</li>
+            <li><span class="term-title">117. Demand/Customer Concept:</span> The perspective that defines the market as the total aggregate demand generated by potential buyers for a specific product.</li>
+            <li><span class="term-title">118. Local Market:</span> A market where commodities are bought and sold strictly within the localized geographical limits of a region.</li>
+            <li><span class="term-title">119. National Market:</span> A market covering commodities that are produced and sold extensively within the entire boundaries of a country.</li>
+            <li><span class="term-title">120. Very Short Period Market:</span> A market existing only for a few hours or a day specifically for selling perishable goods like vegetables.</li>
+            <li><span class="term-title">121. Wholesale Market:</span> A market focused on the bulk purchase and sale of goods in large quantities at cheaper prices to retailers.</li>
+            <li><span class="term-title">122. Retail Market:</span> The market stage where retailers sell goods directly to the ultimate end-consumer in small, convenient quantities.</li>
+            <li><span class="term-title">123. Primary Market:</span> A market heavily dealing with the exchange of raw primary products such as agricultural produce and forest goods.</li>
+            <li><span class="term-title">124. Terminal Market:</span> The final market layer where finished goods are sold directly to the ultimate users or end consumers.</li>
+            <li><span class="term-title">125. Capital Market:</span> A financial market designed specifically for the borrowing and lending of long-term capital with extended maturity periods.</li>
+            <li><span class="term-title">126. Regulated Market:</span> Markets governed closely by statutory government provisions, such as Stock Exchanges or Commodity Exchanges.</li>
+            <li><span class="term-title">127. Perfect Market:</span> A theoretical market structure with a large number of buyers and sellers trading identical products with perfect market knowledge.</li>
+            <li><span class="term-title">128. Imperfect Market:</span> A market characterized by imperfections such as a single seller or a maladjustment in demand and supply.</li>
+            <li><span class="term-title">129. Monopoly:</span> An imperfect market scenario featuring only one single producer or seller who dictates the entire supply and price.</li>
+            <li><span class="term-title">130. Duopoly:</span> An imperfect market featuring exactly two sellers who share a monopoly over the sale of a homogeneous or differentiated product.</li>
+            <li><span class="term-title">131. Oligopoly:</span> A market featuring only a few dominant sellers producing goods for a large number of buyers.</li>
+            <li><span class="term-title">132. Monopsony:</span> A unique imperfect market situation where there is a single buyer of a commodity, dictating terms to multiple sellers.</li>
+            <li><span class="term-title">133. Consumer Awareness:</span> A state achieved by marketing where potential consumers are educated and informed about new product utilities and features.</li>
+            <li><span class="term-title">134. Marketing Research:</span> The function of meticulously collecting and analyzing information to assess what consumers want, in what quantity, and at what price.</li>
+            <li><span class="term-title">135. Buying and Assembling:</span> The marketing function involving collecting raw materials from varying sources to a centralized place for production.</li>
+            <li><span class="term-title">136. Product Development:</span> The continuous process of designing and upgrading product features, shapes, and quality to suit the changing needs of consumers.</li>
+            <li><span class="term-title">137. Standardisation:</span> The process of predetermining standards regarding size, weight, and quality to ensure strict uniformity in a product.</li>
+            <li><span class="term-title">138. Grading:</span> The physical classification of primary or agricultural products into groups according to similar quality, size, and shape characteristics.</li>
+            <li><span class="term-title">139. Trademark:</span> A brand name, logo, or special identity that has been legally registered, ensuring no competitor can copy it.</li>
+            <li><span class="term-title">140. Branding:</span> The process of assigning a unique identity, name, or symbol to a product to clearly differentiate it from competitive offerings.</li>
+            <li><span class="term-title">141. Customer Support Service:</span> Post-sale services such as technical assistance and helplines designed to ensure total customer satisfaction and build loyalty.</li>
+            <li><span class="term-title">142. Pricing:</span> The critical function of assessing costs, competition, and demand to determine the exact monetary value a customer pays for a product.</li>
+            <li><span class="term-title">143. Distribution:</span> The comprehensive set of activities ensuring the efficient physical movement of finished goods from the factory to the consumer.</li>
+            <li><span class="term-title">144. Place (Marketing Mix):</span> The strategic variable involving distribution channels and locations ensuring a product is easily accessible to buyers.</li>
+            <li><span class="term-title">145. People (7Ps):</span> The human element comprising employees and staff who interact directly with customers and play an active role in service delivery.</li>
+            <li><span class="term-title">146. Process (7Ps):</span> The internal workflow, structural steps, and automated systems involved in delivering a product or service efficiently to a customer.</li>
+            <li><span class="term-title">147. Physical Environment (7Ps):</span> The tangible, visible marketing environment including layout, branding, and staff attire where service interaction takes place.</li>
+            <li><span class="term-title">148. Selling:</span> A narrow, production-oriented approach viewing the customer as the last link, focusing purely on transferring title and possession for a price.</li>
+            <li><span class="term-title">149. Time Utility:</span> Created primarily by warehousing functions, preserving goods safely during the lag between production and eventual consumption.</li>
+            <li><span class="term-title">150. Place Utility:</span> Created primarily by transportation functions, physically moving goods to locations where they are demanded by consumers.</li>
+            <li><span class="term-title">151. Form Utility:</span> Created during the production process by altering the shape or form of raw materials into a finished, consumable product.</li>
+            <li><span class="term-title">152. Market Planning:</span> Creating a blueprint defining marketing objectives and actionable strategies required to achieve those desired market outcomes.</li>
+            <li><span class="term-title">153. Promotional Channels:</span> A blend of tools like advertising, publicity, and personal selling used to communicate and induce customers to buy.</li>
+            <li><span class="term-title">154. Consumer Satisfaction:</span> The ultimate goal of modern marketing, achieved when an offering completely meets or exceeds the customer's expectations.</li>
+            <li><span class="term-title">155. Information Technology in Marketing:</span> The use of E-Commerce, websites, and digital apps defining the new 'Space Concept' of modern digital markets.</li>
+            <li><span class="term-title">156. Brand Equity:</span> The overall value, trust, and strong reputation a business builds in the market through effective, continuous marketing campaigns.</li>
+            <li><span class="term-title">157. Target Market:</span> The specific segment of potential consumers identified through market research at which an organization directs its marketing efforts.</li>
+            <li><span class="term-title">158. After-Sales Service:</span> Assistance provided to a consumer post-purchase to resolve issues, which is critical for creating trust and brand loyalty.</li>
+            <li><span class="term-title">159. Unregulated Market:</span> A free market characterized by the absence of government controls, operating purely on the natural forces of demand and supply.</li>
+            <li><span class="term-title">160. Tangible Product Features:</span> Physical attributes of a product evaluated from a marketing perspective, such as color, shape, music system, and seats in a car.</li>
+            <li><span class="term-title">161. Intangible Product Features:</span> Non-physical benefits attached to a product, such as the comfort, status, or servicing frequency provided to the buyer.</li>
+        </ul>
+
+    </div>
+
+    <!-- Scroll Tracking SVG Arrow (No shadow, bottom right) -->
+    <button id="backToTop" onclick="scrollToTop()">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <footer>
+        Created by Gagan Nishad
+    </footer>
+
+    <script>
+        // Menu Toggle
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburger');
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target) && mobileMenu.classList.contains('open')) {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // Back to Top Logic (Scroll Only)
+        let isScrolling;
+        window.addEventListener('scroll', function (event) {
+            const topBtn = document.getElementById("backToTop");
+            window.clearTimeout(isScrolling);
+            
+            if (window.scrollY > 200) {
+                topBtn.style.opacity = "1";
+                topBtn.style.visibility = "visible";
+            } else {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }
+
+            isScrolling = setTimeout(function() {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }, 1200); 
+        }, false);
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Security Lockouts
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('copy', event => event.preventDefault());
+        document.addEventListener('cut', event => event.preventDefault());
+        document.addEventListener('paste', event => event.preventDefault());
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "F12" || e.keyCode === 44) {
+                e.preventDefault(); return false;
+            }
+            if (e.ctrlKey || e.metaKey) {
+                const key = e.key.toLowerCase();
+                if (['c', 'a', 'x', 'v', 'p', 'u', 's', 'i', '+', '-', '='].includes(key)) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        document.addEventListener('wheel', function(e) {
+            if (e.ctrlKey || e.metaKey) e.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(event) {
+            if (event.scale !== 1 && event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) event.preventDefault();
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>

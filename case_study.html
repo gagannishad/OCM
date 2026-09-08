@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>4. Case Studies | OCM Study Portal</title>
+    <meta name="theme-color" content="#F9F5FF">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           GLOBAL SECURITY & FLAT CSS RESET (NO SHADOWS, NO BOXES)
+           ========================================= */
+        :root {
+            --bg-page: #F9F5FF; 
+            --nav-bg: rgba(249, 245, 255, 0.95); 
+            --text-main: #2E1065; 
+            --text-muted: #6B21A8;
+            --purple-primary: #9333EA; 
+            --purple-light: rgba(147, 51, 234, 0.12);
+            --divider: rgba(147, 51, 234, 0.3);
+            --correct: #16a34a;
+        }
+
+        *, *::before, *::after { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            width: 100%; 
+            min-height: 100vh;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Poppins", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation - FLAT DESIGN */
+        nav {
+            position: sticky; top: 0; width: 100%; height: 65px;
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 24px; z-index: 1000;
+            border-bottom: 1px solid var(--divider);
+        }
+        .nav-brand { font-size: 20px; font-weight: 700; color: var(--purple-primary); letter-spacing: -0.01em; }
+        
+        .hamburger { width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 1002; }
+        .hamburger span { display: block; height: 2.5px; width: 100%; background-color: var(--purple-primary); border-radius: 3px; transition: all 0.4s ease; transform-origin: left center; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(1px, -1px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(1px, 1px); }
+
+        .mobile-menu {
+            position: absolute; top: 75px; right: 20px; width: 250px;
+            background-color: var(--bg-page); border-radius: 16px;
+            border: 1px solid var(--divider); padding: 10px; display: flex; flex-direction: column;
+            transform-origin: top right; transform: scale(0.8) translateY(-20px); opacity: 0; visibility: hidden;
+            transition: all 0.4s ease; z-index: 1001;
+        }
+        .mobile-menu.open { transform: scale(1) translateY(0); opacity: 1; visibility: visible; }
+        .mobile-menu a {
+            text-decoration: none; color: var(--text-main); font-size: 15px; font-weight: 600;
+            padding: 12px 16px; border-radius: 10px; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .mobile-menu a:active, .mobile-menu a:hover { background-color: var(--purple-light); color: var(--purple-primary); transform: translateX(5px); }
+
+        /* Main Content - Merged with screen, NO BOXES */
+        .main-wrapper { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; flex: 1; width: 100%; }
+
+        .page-header {
+            text-align: left; margin-bottom: 40px;
+            border-bottom: 3px solid var(--purple-primary);
+            padding-bottom: 15px;
+        }
+        .page-header h1 { font-size: 32px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; }
+        .page-header p { font-size: 16px; color: var(--text-muted); font-weight: 500; }
+
+        /* Section Headings */
+        .part-heading {
+            font-size: 28px; color: var(--text-main); 
+            margin-top: 50px; margin-bottom: 10px; 
+            font-weight: 800;
+        }
+        
+        .chapter-heading {
+            font-size: 22px; color: var(--purple-primary);
+            margin-top: 30px; margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Case Study List - Flat text */
+        .case-list { list-style: none; padding: 0; margin-bottom: 40px; }
+        .case-list li {
+            padding: 25px 0;
+            border-bottom: 2px dashed var(--divider);
+            font-size: 15px;
+            line-height: 1.7;
+            color: #333;
+        }
+        .case-list li:last-child { border-bottom: none; }
+        .case-title { font-weight: 700; color: var(--purple-primary); font-size: 18px; margin-bottom: 10px; display: block; }
+        .case-text { margin-bottom: 15px; color: var(--text-main); font-weight: 500; }
+        .case-qs { padding-left: 15px; border-left: 3px solid var(--purple-primary); margin-top: 10px; }
+        .q-text { font-weight: 600; color: var(--text-main); display: block; margin-top: 10px;}
+        .ans-text { color: var(--correct); font-weight: 700; display: block; margin-bottom: 5px; }
+
+        /* SVG Back to Top Arrow - Extreme Bottom Right, NO SHADOW */
+        #backToTop {
+            position: fixed; bottom: 15px; right: 15px; width: 45px; height: 45px;
+            background-color: var(--purple-primary); color: white; border: none;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            z-index: 2000; cursor: pointer;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #backToTop svg {
+            width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        footer { text-align: center; padding: 24px; font-size: 15px; color: var(--text-muted); border-top: 1px solid var(--divider); font-weight: 500; margin-top: auto; background-color: transparent; }
+    </style>
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+
+    <!-- Navigation Menu (8 Links) -->
+    <nav>
+        <div class="nav-brand">OCM Study Portal</div>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" onclick="toggleMenu()">Syllabus & Pattern</a>
+            <a href="true_false.html" onclick="toggleMenu()">1. True or False</a>
+            <a href="odd_one.html" onclick="toggleMenu()">2. Find the Odd One</a>
+            <a href="explain_terms.html" onclick="toggleMenu()">3. Explain Terms</a>
+            <a href="case_study.html" style="color: var(--purple-primary);" onclick="toggleMenu()">4. Case Studies</a>
+            <a href="distinguish.html" onclick="toggleMenu()">5. Distinguish Between</a>
+            <a href="answer_following.html" onclick="toggleMenu()">6. Answer the Following</a>
+            <a href="practice_paper1.html" onclick="toggleMenu()">Practice Paper 1</a>
+            <a href="practice_paper2.html" onclick="toggleMenu()">Practice Paper 2</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <div class="page-header">
+            <h1>Study the Following Cases</h1>
+            <p>Complete Textbook Cases & Extensive Custom Scenarios (Chapters 2, 4, 8)</p>
+        </div>
+
+        <!-- ================= TEXTBOOK CASES SECTION ================= -->
+        <h2 class="part-heading">PART A: Textbook Exercises</h2>
+
+        <h3 class="chapter-heading">Chapter 2: Functions of Management</h3>
+        <ul class="case-list">
+            <li>
+                <span class="case-title">Case 1: Mr. Ram's Emerging Enterprise</span>
+                <div class="case-text">Mr. Ram, an emerging entrepreneur, has designed a structure for his business organization by taking into consideration the required resources such as land, money, machinery, workforce etc., for his new business. He appointed Mr. Shyam as a manager. Mr. Ram has assigned responsibilities such as recruitment, selection, training and development, and determining the remuneration of employees to Mr. Shyam. Mr. Ram also appointed Mr. Shubham to supervise the work done by the employees according to the standards given to them. Mr. Shubham also suggests remedies to the employees wherever necessary.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Find out the management function performed by Mr. Ram.</span>
+                    <span class="ans-text">Answer: Organizing.</span>
+                    <span class="q-text">ii. Find out the management function performed by Mr. Shyam.</span>
+                    <span class="ans-text">Answer: Staffing.</span>
+                    <span class="q-text">iii. Find out the management function performed by Mr. Shubham.</span>
+                    <span class="ans-text">Answer: Controlling.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 2: XYZ Company</span>
+                <div class="case-text">In XYZ Company, Mr. Lele gives instructions to the employees working under him, provides guidance, and motivates them for their best performance. On the other hand, Mr. Sayyad takes effort to harmonize the work done by the employees of different departments while achieving the organizational goal. Mr. Desai is looking after the arrangement of required resources for the business organization.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Mention the name of the employee engaged in the Organization function.</span>
+                    <span class="ans-text">Answer: Mr. Desai.</span>
+                    <span class="q-text">ii. Mention the name of the employee engaged in the Direction function.</span>
+                    <span class="ans-text">Answer: Mr. Lele.</span>
+                    <span class="q-text">iii. Mention the name of the employee engaged in the Coordination function.</span>
+                    <span class="ans-text">Answer: Mr. Sayyad.</span>
+                </div>
+            </li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 4: Business Services</h3>
+        <ul class="case-list">
+            <li>
+                <span class="case-title">Case 3: Ms. Harshali's Business Account</span>
+                <div class="case-text">Ms. Harshali started a new business two years ago. Her customers are located in different parts of the country and hence they directly deposit bill amounts into her business account. At the same time, she uses this account to make various payments.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Identify the type of account maintained by Ms. Harshali.</span>
+                    <span class="ans-text">Answer: Current Account.</span>
+                    <span class="q-text">ii. Suggest any one modern way of money transfer to Ms. Harshali.</span>
+                    <span class="ans-text">Answer: RTGS / NEFT / IMPS.</span>
+                    <span class="q-text">iii. What kind of facility does she get on her bank account?</span>
+                    <span class="ans-text">Answer: Overdraft Facility.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 4: Mr. Jagan's Policy Decision</span>
+                <div class="case-text">Mr. Jagan is a salaried person. He wants to take a policy for his two children which assures them protection as well as completes their financial needs once they become majors by age.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Suggest a policy which can satisfy the requirements of his children.</span>
+                    <span class="ans-text">Answer: Child Insurance Policy.</span>
+                    <span class="q-text">ii. Who are the beneficiaries of the policy?</span>
+                    <span class="ans-text">Answer: The two children.</span>
+                    <span class="q-text">iii. In the above case, which principle of insurance is involved?</span>
+                    <span class="ans-text">Answer: Principle of Insurable Interest.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 5: Mr. Sharan's Manufacturing Units</span>
+                <div class="case-text">Mr. Sharan is a successful manufacturer having production units at various locations. He has a large stock of raw materials and finished goods and is worried about safeguarding goods from unwanted financial loss. He also requires transferring raw materials and finished goods from one unit to another but lacks facility. He also requires funds for expansion.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Name the service which will help him safeguard goods from any damage.</span>
+                    <span class="ans-text">Answer: Insurance and Warehousing.</span>
+                    <span class="q-text">ii. Which service will help him remove the difficulty of place?</span>
+                    <span class="ans-text">Answer: Transport Service.</span>
+                    <span class="q-text">iii. From which service sector will he get financial support?</span>
+                    <span class="ans-text">Answer: Banking Service.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 6: Mr. Amit's Factories</span>
+                <div class="case-text">Mr. Amit is a businessman having factories in Pune and Nashik. He lives in Pune with his wife and 2 daughters aged 5 and 8 years.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Can Mr. Amit take a life insurance policy for his wife and 2 children?</span>
+                    <span class="ans-text">Answer: Yes, because he has an insurable interest in their lives.</span>
+                    <span class="q-text">ii. Can Mr. Amit take a marine insurance policy for his factories?</span>
+                    <span class="ans-text">Answer: No, marine insurance covers loss or damage to vessels or cargo during sea transit, not stationary factories.</span>
+                    <span class="q-text">iii. Which type of insurance should Mr. Amit take to protect his factories from fire?</span>
+                    <span class="ans-text">Answer: Fire Insurance (Comprehensive or Specific Policy).</span>
+                </div>
+            </li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 8: Marketing</h3>
+        <ul class="case-list">
+            <li>
+                <span class="case-title">Case 7: Purchasing Locations</span>
+                <div class="case-text">Mr. X purchases goods from the nearest shop. Mr. Y purchases mobiles from Tokyo. Mr. Z of Nandurbar purchases electronic goods from Delhi.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. From which type of market does Mr. X purchase?</span>
+                    <span class="ans-text">Answer: Local Market / Retail Market.</span>
+                    <span class="q-text">ii. Name the type of market from where Mr. Y deals.</span>
+                    <span class="ans-text">Answer: International Market.</span>
+                    <span class="q-text">iii. State the type of market from where Mr. Z purchases goods.</span>
+                    <span class="ans-text">Answer: National Market.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 8: Mr. X's Financial Deals</span>
+                <div class="case-text">Mr. X deals in the import and export business, so he needs different foreign currencies. For the expansion of his business, he borrows money from a bank. He also invests his funds in equity shares.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Name the market from where Mr. X borrows money.</span>
+                    <span class="ans-text">Answer: Capital Market (for long term) or Money Market.</span>
+                    <span class="q-text">ii. Name the market where Mr. X invests his funds.</span>
+                    <span class="ans-text">Answer: Stock Market / Secondary Capital Market.</span>
+                    <span class="q-text">iii. Which type of currency is required for the international market?</span>
+                    <span class="ans-text">Answer: Foreign Exchange / Forex.</span>
+                </div>
+            </li>
+        </ul>
+
+        <!-- ================= EXTENSIVE EXTRA CASES SECTION ================= -->
+        <h2 class="part-heading" style="margin-top: 60px;">PART B: Extensive Custom Scenarios</h2>
+
+        <h3 class="chapter-heading">Chapter 2: Functions of Management</h3>
+        <ul class="case-list">
+            <li>
+                <span class="case-title">Case 9: The Disorganized Startup</span>
+                <div class="case-text">Rohan started a tech company. He hired 20 people but nobody knows who reports to whom. The marketing team is doing sales, and the sales team is sitting idle. Rohan finally decides to group activities logically, create departments, and assign specific authority to department heads.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Which management function was missing initially?</span>
+                    <span class="ans-text">Answer: Organizing.</span>
+                    <span class="q-text">ii. What benefit will Rohan get by grouping activities?</span>
+                    <span class="ans-text">Answer: It brings specialization and avoids duplication of work.</span>
+                    <span class="q-text">iii. What does assigning authority to department heads achieve?</span>
+                    <span class="ans-text">Answer: It clarifies authority and responsibility.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 10: The Visionary Leader</span>
+                <div class="case-text">Sunita is the CEO of a retail chain. Before the financial year starts, she sits with her board to decide the sales targets for the next year, maps out the steps required to achieve them, and anticipates future risks in the retail sector to prepare backup strategies.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Identify the management function Sunita is performing.</span>
+                    <span class="ans-text">Answer: Planning.</span>
+                    <span class="q-text">ii. Why is anticipating future risks important here?</span>
+                    <span class="ans-text">Answer: It minimizes the risk of uncertain future events.</span>
+                    <span class="q-text">iii. What is the fundamental nature of this function?</span>
+                    <span class="ans-text">Answer: It is an intellectual process of logical thinking and decision making.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 11: Bridging the Gap</span>
+                <div class="case-text">In a car manufacturing plant, the target was to produce 1,000 cars a month. At the end of the month, only 850 cars were produced. Manager Karan investigates the issue, finds that machine breakdowns caused the delay, and immediately orders new maintenance schedules to ensure the target is met next month.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Which management function is Karan executing?</span>
+                    <span class="ans-text">Answer: Controlling.</span>
+                    <span class="q-text">ii. What does the difference of 150 cars represent?</span>
+                    <span class="ans-text">Answer: Deviation from the standard performance.</span>
+                    <span class="q-text">iii. What is the final step Karan took in this process?</span>
+                    <span class="ans-text">Answer: Taking corrective action.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 12: Harmonizing the Teams</span>
+                <div class="case-text">The Production manager is producing 500 units a day, but the Sales manager can only sell 300 units a day, leading to massive unsold stock. The General Manager steps in and aligns the production schedule strictly with the sales forecasts to ensure smooth flow without wastage.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Which management function is the General Manager performing?</span>
+                    <span class="ans-text">Answer: Co-ordinating.</span>
+                    <span class="q-text">ii. What was the outcome of the lack of this function initially?</span>
+                    <span class="ans-text">Answer: Wastage of resources and overproduction.</span>
+                    <span class="q-text">iii. How does this function help the organization?</span>
+                    <span class="ans-text">Answer: It integrates efforts and brings unity of direction.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 13: Inspiring the Workforce</span>
+                <div class="case-text">A team of software developers is feeling demotivated due to long hours. The project lead, Sameer, conducts a meeting, actively listens to their issues, provides clear guidance on the coding structure, and promises performance bonuses for finishing the project on time.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Which management function is Sameer actively performing?</span>
+                    <span class="ans-text">Answer: Directing.</span>
+                    <span class="q-text">ii. Which specific elements of this function are used here?</span>
+                    <span class="ans-text">Answer: Leadership, Communication, and Motivation.</span>
+                    <span class="q-text">iii. Why is this function called the 'life spark' of an enterprise?</span>
+                    <span class="ans-text">Answer: Because it initiates action and puts plans into motion.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 14: HR Crisis</span>
+                <div class="case-text">A hospital is facing a severe shortage of nurses. The HR head, Dr. Priya, immediately releases an advertisement, interviews candidates, selects the best ones, and arranges a one-week orientation program to train them on hospital protocols.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Identify the management function Dr. Priya is handling.</span>
+                    <span class="ans-text">Answer: Staffing.</span>
+                    <span class="q-text">ii. What is the basic principle she must follow?</span>
+                    <span class="ans-text">Answer: Right person at the right job with the right pay.</span>
+                    <span class="q-text">iii. What is the purpose of the orientation program?</span>
+                    <span class="ans-text">Answer: Training and human resource development.</span>
+                </div>
+            </li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 4: Business Services</h3>
+        <ul class="case-list">
+            <li>
+                <span class="case-title">Case 15: The Unforeseen Fire</span>
+                <div class="case-text">Mr. Gupta insured his warehouse valued at Rs. 10 Lakhs for only Rs. 5 Lakhs. A fire breaks out and destroys goods worth Rs. 4 Lakhs. The insurance company pays him only Rs. 2 Lakhs. Mr. Gupta is confused as to why the full loss of 4 Lakhs wasn't covered.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Which fire insurance policy clause applied here?</span>
+                    <span class="ans-text">Answer: Average Policy / Average Clause.</span>
+                    <span class="q-text">ii. Why did the insurance company pay only Rs. 2 Lakhs?</span>
+                    <span class="ans-text">Answer: Because the property was under-insured by 50%, so only 50% of the loss is compensated.</span>
+                    <span class="q-text">iii. Which overarching principle prevents him from making a profit out of a loss?</span>
+                    <span class="ans-text">Answer: Principle of Indemnity.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 16: The Rapid Funds Need</span>
+                <div class="case-text">ABC Traders urgently needs to send Rs. 5 Lakhs to a supplier in another state within the next hour to release a critical shipment. Normal cheque clearance takes two days. They approach their bank for the fastest electronic method.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Which modern banking facility should ABC Traders use?</span>
+                    <span class="ans-text">Answer: RTGS (Real Time Gross Settlement).</span>
+                    <span class="q-text">ii. Why is this facility appropriate here?</span>
+                    <span class="ans-text">Answer: It settles transactions in real-time without a waiting period.</span>
+                    <span class="q-text">iii. What is the minimum limit for this specific transaction method?</span>
+                    <span class="ans-text">Answer: Rs. Two Lakhs.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 17: Import Dilemma</span>
+                <div class="case-text">Mr. David imports luxury cars into India. A shipment arrives at the Mumbai port, but he is currently short on funds to pay the heavy custom duties immediately. He needs a secure place to store the cars until he can arrange the funds.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Where should Mr. David store his imported cars?</span>
+                    <span class="ans-text">Answer: Bonded Warehouse.</span>
+                    <span class="q-text">ii. Who licenses and controls these specific warehouses?</span>
+                    <span class="ans-text">Answer: The Government and Custom Authorities.</span>
+                    <span class="q-text">iii. When can Mr. David withdraw his cars from this warehouse?</span>
+                    <span class="ans-text">Answer: Only after paying the required custom duties.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 18: Multiple Insurers</span>
+                <div class="case-text">Karan takes a fire insurance policy for his factory worth Rs. 50 Lakhs from Company A for 30 Lakhs, and from Company B for 20 Lakhs. A fire causes a loss of Rs. 10 Lakhs. Karan claims Rs. 10 Lakhs from Company A and Rs. 10 Lakhs from Company B, expecting a total of 20 Lakhs.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Will Karan receive Rs. 20 Lakhs in total?</span>
+                    <span class="ans-text">Answer: No.</span>
+                    <span class="q-text">ii. Which principle of insurance prevents this?</span>
+                    <span class="ans-text">Answer: Principle of Contribution.</span>
+                    <span class="q-text">iii. How much is he actually entitled to receive in total?</span>
+                    <span class="ans-text">Answer: He can only receive the actual loss amount, i.e., Rs. 10 Lakhs total, contributed proportionately by A and B.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 19: The Perishable Export</span>
+                <div class="case-text">FarmFresh India needs to export highly perishable exotic fruits to London within 24 hours to ensure they don't spoil. They are evaluating the best mode of transport and the best storage facility before the flight.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Which mode of transport is mandatory for this requirement?</span>
+                    <span class="ans-text">Answer: Air Transport.</span>
+                    <span class="q-text">ii. What type of warehouse should they use before loading?</span>
+                    <span class="ans-text">Answer: Cold Storage Warehouse.</span>
+                    <span class="q-text">iii. What is the major disadvantage of this mode of transport?</span>
+                    <span class="ans-text">Answer: It is a relatively very expensive mode of transport.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 20: The Corporate Mailer</span>
+                <div class="case-text">A telecom company needs to send printed monthly bills to 50,000 customers across the state. They want a cost-effective postal solution specially designed for corporate bulk mailings that are purely financial statements.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Which specialized postal service should the telecom company use?</span>
+                    <span class="ans-text">Answer: Bill Mail Service.</span>
+                    <span class="q-text">ii. What is the minimum quantity of articles required to use this service?</span>
+                    <span class="ans-text">Answer: 5000 articles.</span>
+                    <span class="q-text">iii. Can they get a credit facility for this service?</span>
+                    <span class="ans-text">Answer: No, there is no credit facility for Bill Mail Service.</span>
+                </div>
+            </li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 8: Marketing</h3>
+        <ul class="case-list">
+            <li>
+                <span class="case-title">Case 21: The Unbranded Grain</span>
+                <div class="case-text">Farmer Kishan produces high-quality wheat. He currently sells it loose in the local market. A consultant advises him to separate the wheat by size and quality, pack it in strong attractive 5kg bags, and give it a unique name like 'Kishan Gold' before selling.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. What is the process of separating the wheat by quality called?</span>
+                    <span class="ans-text">Answer: Grading.</span>
+                    <span class="q-text">ii. Putting the wheat in attractive 5kg bags is an example of which function?</span>
+                    <span class="ans-text">Answer: Packaging.</span>
+                    <span class="q-text">iii. Giving it the name 'Kishan Gold' represents which marketing function?</span>
+                    <span class="ans-text">Answer: Branding.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 22: The Airline Strategy</span>
+                <div class="case-text">SkyHigh Airlines is launching a new route. They ensure their airplanes are spotless, their crew is highly trained to be polite and efficient, and their check-in workflow is entirely automated via an app to save time for passengers.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Training the crew to be polite relates to which 'P' of the service marketing mix?</span>
+                    <span class="ans-text">Answer: People.</span>
+                    <span class="q-text">ii. The automated check-in workflow relates to which 'P'?</span>
+                    <span class="ans-text">Answer: Process.</span>
+                    <span class="q-text">iii. The spotless airplane interior relates to which 'P'?</span>
+                    <span class="ans-text">Answer: Physical Environment (Physical Evidence).</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 23: Setting the Right Cost</span>
+                <div class="case-text">A company launched a highly innovative smartphone. However, they priced it so high that nobody bought it, and it failed. They re-launched it after doing extensive research on what customers are willing to pay and adjusting the cost slightly above the competitor's rate.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Which element of the marketing mix did the company fail to execute properly initially?</span>
+                    <span class="ans-text">Answer: Price.</span>
+                    <span class="q-text">ii. What function did they perform to find out customer willingness?</span>
+                    <span class="ans-text">Answer: Marketing Research.</span>
+                    <span class="q-text">iii. What is the risk of pricing a product too low instead?</span>
+                    <span class="ans-text">Answer: It might severely affect the profitability of the business.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 24: Market Structures</span>
+                <div class="case-text">In City A, there is only one electricity provider, and citizens have no other choice. In City B, there are exactly two major internet providers who dominate the entire market. In City C, hundreds of farmers are selling identical tomatoes at the exact same price.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. City A represents which type of market competition?</span>
+                    <span class="ans-text">Answer: Monopoly.</span>
+                    <span class="q-text">ii. City B represents which type of market competition?</span>
+                    <span class="ans-text">Answer: Duopoly.</span>
+                    <span class="q-text">iii. City C represents which type of market competition?</span>
+                    <span class="ans-text">Answer: Perfect Market.</span>
+                </div>
+            </li>
+            <li>
+                <span class="case-title">Case 25: The Ultimate Goal</span>
+                <div class="case-text">Company Alpha believes that just producing high-quality shoes efficiently will make them successful. Company Beta believes in identifying what style of shoes teenagers want, offering fair prices, honest advertising, and a strong return policy.</div>
+                <div class="case-qs">
+                    <span class="q-text">i. Company Alpha is following which type of approach?</span>
+                    <span class="ans-text">Answer: Production-oriented (Selling approach).</span>
+                    <span class="q-text">ii. Company Beta is following which type of approach?</span>
+                    <span class="ans-text">Answer: Customer-oriented (Marketing approach).</span>
+                    <span class="q-text">iii. What is the ultimate outcome Company Beta is aiming for through its policies?</span>
+                    <span class="ans-text">Answer: Consumer Satisfaction.</span>
+                </div>
+            </li>
+        </ul>
+
+    </div> <!-- End Main Wrapper -->
+
+    <!-- Scroll Tracking SVG Arrow -->
+    <button id="backToTop" onclick="scrollToTop()">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <footer>
+        Created by Gagan Nishad
+    </footer>
+
+    <script>
+        // Menu Toggle
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburger');
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target) && mobileMenu.classList.contains('open')) {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // Back to Top Logic
+        let isScrolling;
+        window.addEventListener('scroll', function (event) {
+            const topBtn = document.getElementById("backToTop");
+            window.clearTimeout(isScrolling);
+            
+            if (window.scrollY > 200) {
+                topBtn.style.opacity = "1";
+                topBtn.style.visibility = "visible";
+            } else {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }
+
+            isScrolling = setTimeout(function() {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }, 1200); 
+        }, false);
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Security Lockouts
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('copy', event => event.preventDefault());
+        document.addEventListener('cut', event => event.preventDefault());
+        document.addEventListener('paste', event => event.preventDefault());
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "F12" || e.keyCode === 44) {
+                e.preventDefault(); return false;
+            }
+            if (e.ctrlKey || e.metaKey) {
+                const key = e.key.toLowerCase();
+                if (['c', 'a', 'x', 'v', 'p', 'u', 's', 'i', '+', '-', '='].includes(key)) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        document.addEventListener('wheel', function(e) {
+            if (e.ctrlKey || e.metaKey) e.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(event) {
+            if (event.scale !== 1 && event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) event.preventDefault();
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>

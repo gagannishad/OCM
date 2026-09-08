@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>2. Find the Odd One | OCM Study Portal</title>
+    <meta name="theme-color" content="#F9F5FF">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           GLOBAL SECURITY & FLAT CSS RESET (NO SHADOWS, NO BOXES)
+           ========================================= */
+        :root {
+            --bg-page: #F9F5FF; 
+            --nav-bg: rgba(249, 245, 255, 0.95); 
+            --text-main: #2E1065; 
+            --text-muted: #6B21A8;
+            --purple-primary: #9333EA; 
+            --purple-light: rgba(147, 51, 234, 0.12);
+            --divider: rgba(147, 51, 234, 0.25);
+            --correct: #16a34a;
+        }
+
+        *, *::before, *::after { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            width: 100%; 
+            min-height: 100vh;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Poppins", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation - FLAT DESIGN */
+        nav {
+            position: sticky; top: 0; width: 100%; height: 65px;
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 24px; z-index: 1000;
+            border-bottom: 1px solid var(--divider);
+        }
+        .nav-brand { font-size: 20px; font-weight: 700; color: var(--purple-primary); letter-spacing: -0.01em; }
+        
+        .hamburger { width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 1002; }
+        .hamburger span { display: block; height: 2.5px; width: 100%; background-color: var(--purple-primary); border-radius: 3px; transition: all 0.4s ease; transform-origin: left center; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(1px, -1px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(1px, 1px); }
+
+        .mobile-menu {
+            position: absolute; top: 75px; right: 20px; width: 250px;
+            background-color: var(--bg-page); border-radius: 16px;
+            border: 1px solid var(--divider); padding: 10px; display: flex; flex-direction: column;
+            transform-origin: top right; transform: scale(0.8) translateY(-20px); opacity: 0; visibility: hidden;
+            transition: all 0.4s ease; z-index: 1001;
+        }
+        .mobile-menu.open { transform: scale(1) translateY(0); opacity: 1; visibility: visible; }
+        .mobile-menu a {
+            text-decoration: none; color: var(--text-main); font-size: 15px; font-weight: 600;
+            padding: 12px 16px; border-radius: 10px; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .mobile-menu a:active, .mobile-menu a:hover { background-color: var(--purple-light); color: var(--purple-primary); transform: translateX(5px); }
+
+        /* Main Content - Merged with screen, NO BOXES */
+        .main-wrapper { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; flex: 1; width: 100%; }
+
+        .page-header {
+            text-align: left; margin-bottom: 40px;
+            border-bottom: 3px solid var(--purple-primary);
+            padding-bottom: 15px;
+        }
+        .page-header h1 { font-size: 32px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; }
+        .page-header p { font-size: 16px; color: var(--text-muted); font-weight: 500; }
+
+        /* Section Headings */
+        .part-heading {
+            font-size: 28px; color: var(--text-main); 
+            margin-top: 50px; margin-bottom: 10px; 
+            font-weight: 800;
+        }
+        
+        .chapter-heading {
+            font-size: 20px; color: var(--purple-primary);
+            margin-top: 30px; margin-bottom: 15px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Q&A List - Flat text */
+        .qa-list { list-style: none; padding: 0; margin-bottom: 40px; }
+        .qa-list li {
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--divider);
+            font-size: 16px;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+        .qa-list li:last-child { border-bottom: none; }
+        .q-text { font-weight: 500; color: var(--text-main); margin-bottom: 4px; }
+        .ans-true { color: var(--correct); font-weight: 700; }
+
+        /* Hidden citation formatting */
+        .sys-cite { display: none; }
+
+        /* SVG Back to Top Arrow - Extreme Bottom Right, NO SHADOW */
+        #backToTop {
+            position: fixed; bottom: 15px; right: 15px; width: 45px; height: 45px;
+            background-color: var(--purple-primary); color: white; border: none;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            z-index: 2000; cursor: pointer;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #backToTop svg {
+            width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        footer { text-align: center; padding: 24px; font-size: 15px; color: var(--text-muted); border-top: 1px solid var(--divider); font-weight: 500; margin-top: auto; background-color: transparent; }
+    </style>
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+
+    <!-- Navigation Menu (8 Links) -->
+    <nav>
+        <div class="nav-brand">OCM Study Portal</div>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" onclick="toggleMenu()">Syllabus & Pattern</a>
+            <a href="true_false.html" onclick="toggleMenu()">1. True or False</a>
+            <a href="odd_one.html" style="color: var(--purple-primary);" onclick="toggleMenu()">2. Find the Odd One</a>
+            <a href="explain_terms.html" onclick="toggleMenu()">3. Explain Terms</a>
+            <a href="case_study.html" onclick="toggleMenu()">4. Case Studies</a>
+            <a href="distinguish.html" onclick="toggleMenu()">5. Distinguish Between</a>
+            <a href="answer_following.html" onclick="toggleMenu()">6. Answer the Following</a>
+            <a href="practice_paper1.html" onclick="toggleMenu()">Practice Paper 1</a>
+            <a href="practice_paper2.html" onclick="toggleMenu()">Practice Paper 2</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <div class="page-header">
+            <h1>Find the Odd One Repository</h1>
+            <p>Complete Textbook Exercises & 150 Extensive Custom Questions</p>
+        </div>
+
+        <!-- ================= TEXTBOOK EXERCISES SECTION ================= -->
+        <h2 class="part-heading">PART A: Textbook Exercises</h2>
+
+        <h3 class="chapter-heading">Chapter 2: Functions of Management</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">1. Planning, Organizing, Staffing, Writing.</span> <span class="ans-true">Answer: Writing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">2. Selecting, Training, Co-ordinating, Placing.</span> <span class="ans-true">Answer: Co-ordinating</span><span class="sys-cite">[cite: 4]</span></li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 4: Business Services</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">3. Primary credit co-operative society, state co-operative bank, district co-operative bank, exchange bank.</span> <span class="ans-true">Answer: exchange bank</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">4. NABARD, RBI, SIDBI, EXIM.</span> <span class="ans-true">Answer: RBI</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">5. Direct mail, Logistics post, Business post, Parcel.</span> <span class="ans-true">Answer: Parcel</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">6. Endowment policy, Whole life policy, Money back policy, Blanket policy.</span> <span class="ans-true">Answer: Blanket policy</span><span class="sys-cite">[cite: 4]</span></li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 8: Marketing</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">7. Primary Market, Secondary Market, Retail Market, Terminal Market.</span> <span class="ans-true">Answer: Retail Market</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">8. Stock Exchange, Foreign Exchange, Bullion Market, Manufactured Goods Market.</span> <span class="ans-true">Answer: Manufactured Goods Market</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">9. Price, People, Promotion, Product.</span> <span class="ans-true">Answer: People</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">10. People, Promotion, Physical Evidence, Process.</span> <span class="ans-true">Answer: Promotion</span><span class="sys-cite">[cite: 4]</span></li>
+        </ul>
+
+
+        <!-- ================= 150 EXTRA QUESTIONS SECTION ================= -->
+        <h2 class="part-heading" style="margin-top: 60px;">PART B: 150 Extensive Exam Questions</h2>
+
+        <h3 class="chapter-heading">Chapter 2: Functions of Management</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">11. Planning, Organizing, Controlling, Trading.</span> <span class="ans-true">Answer: Trading</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">12. Recruiting, Selecting, Placing, Forecasting.</span> <span class="ans-true">Answer: Forecasting</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">13. Instructing, Guiding, Inspiring, Auditing.</span> <span class="ans-true">Answer: Auditing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">14. Measurement, Comparing, Corrective Action, Marketing.</span> <span class="ans-true">Answer: Marketing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">15. Men, Money, Material, Monopoly.</span> <span class="ans-true">Answer: Monopoly</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">16. Top Level, Middle Level, Lower Level, Consumer Level.</span> <span class="ans-true">Answer: Consumer Level</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">17. Directing, Communicating, Supervising, Financing.</span> <span class="ans-true">Answer: Financing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">18. Setting standards, Finding deviations, Corrective action, Recruiting.</span> <span class="ans-true">Answer: Recruiting</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">19. Physical resources, Financial resources, Information resources, Natural disasters.</span> <span class="ans-true">Answer: Natural disasters</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">20. Co-operation, Team Spirit, Unity of Action, Segregation.</span> <span class="ans-true">Answer: Segregation</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">21. Planning, Organizing, Directing, Sleeping.</span> <span class="ans-true">Answer: Sleeping</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">22. L.A. Allen, Henry Fayol, F.W. Taylor, Virat Kohli.</span> <span class="ans-true">Answer: Virat Kohli</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">23. Instructing, Inspiring, Motivating, Programming.</span> <span class="ans-true">Answer: Programming</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">24. Recruitment, Training, Development, Manufacturing.</span> <span class="ans-true">Answer: Manufacturing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">25. Comparing, Finding deviations, Analysing causes, Advertising.</span> <span class="ans-true">Answer: Advertising</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">26. Planning, Designing, Implementing, Retaining.</span> <span class="ans-true">Answer: Retaining</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">27. Co-ordination, Integration, Synchronization, Divisibility.</span> <span class="ans-true">Answer: Divisibility</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">28. Setting objectives, Forecasting, Formulating plans, Appraising.</span> <span class="ans-true">Answer: Appraising</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">29. Appraising, Remunerating, Placing, Budgeting.</span> <span class="ans-true">Answer: Budgeting</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">30. Logical thinking, Rational decision making, Detail programming, Assembling.</span> <span class="ans-true">Answer: Assembling</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">31. Centralization, Decentralization, Planning, Organization structure.</span> <span class="ans-true">Answer: Planning</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">32. Discipline, Order, Corrective action, Financing.</span> <span class="ans-true">Answer: Financing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">33. P, O, S, Z (From POSDCORB).</span> <span class="ans-true">Answer: Z</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">34. D, Co, R, W (From POSDCORB).</span> <span class="ans-true">Answer: W</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">35. James Stoner, Koontz, O'Donnell, Albert Einstein.</span> <span class="ans-true">Answer: Albert Einstein</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">36. Job security, Promotion, Incentives, Raw material.</span> <span class="ans-true">Answer: Raw material</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">37. Target, Actual performance, Standard, Market segmentation.</span> <span class="ans-true">Answer: Market segmentation</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">38. Instructing, Counseling, Overseeing, Distributing.</span> <span class="ans-true">Answer: Distributing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">39. Right person, Right job, Right pay, Right weather.</span> <span class="ans-true">Answer: Right weather</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">40. Harmonize, Unify, Integrate, Separate.</span> <span class="ans-true">Answer: Separate</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">41. Attracting, Recruiting, Selecting, Manufacturing.</span> <span class="ans-true">Answer: Manufacturing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">42. Grouping activities, Assigning work, Establishing authority, Pricing.</span> <span class="ans-true">Answer: Pricing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">43. Men, Money, Machine, Moon.</span> <span class="ans-true">Answer: Moon</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">44. Psychological pressure, Motivation, Discipline, Packaging.</span> <span class="ans-true">Answer: Packaging</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">45. Top management, Middle management, Lower management, External management.</span> <span class="ans-true">Answer: External management</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">46. Innovation, Directing, Planning, Controlling.</span> <span class="ans-true">Answer: Innovation</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">47. Finding deviations, Setting standards, Placing.</span> <span class="ans-true">Answer: Placing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">48. Reporting, Budgeting, Organizing, Typing.</span> <span class="ans-true">Answer: Typing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">49. Goal setting, Strategy formulation, Policy making, Staffing.</span> <span class="ans-true">Answer: Staffing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">50. Leadership, Inspiration, Guidance, Accounting.</span> <span class="ans-true">Answer: Accounting</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">51. Standard performance, Actual performance, Deviation, Recruitment.</span> <span class="ans-true">Answer: Recruitment</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">52. Directing, Co-ordinating, Controlling, Exporting.</span> <span class="ans-true">Answer: Exporting</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">53. Team spirit, Mutual trust, Harmony, Monopoly.</span> <span class="ans-true">Answer: Monopoly</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">54. Human resources, Physical resources, Financial resources, Natural resources.</span> <span class="ans-true">Answer: Natural resources</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">55. Guiding, Instructing, Communicating, Warehousing.</span> <span class="ans-true">Answer: Warehousing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">56. Henry Fayol, Mooney, Railey, Bill Gates.</span> <span class="ans-true">Answer: Bill Gates</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">57. Identifying resources, Grouping activities, Assigning duties, Dematerialisation.</span> <span class="ans-true">Answer: Dematerialisation</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">58. Recruitment, Selection, Appraising, Insurance.</span> <span class="ans-true">Answer: Insurance</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">59. Setting targets, Taking corrective steps, Finding deviations, Distributing.</span> <span class="ans-true">Answer: Distributing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">60. Motivation, Inspiration, Communication, Subrogation.</span> <span class="ans-true">Answer: Subrogation</span><span class="sys-cite">[cite: 4]</span></li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 4: Business Services</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">61. Central Bank, Commercial Bank, Co-operative Bank, Blood Bank.</span> <span class="ans-true">Answer: Blood Bank</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">62. Saving Account, Current Account, Fixed Deposit, Twitter Account.</span> <span class="ans-true">Answer: Twitter Account</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">63. ATM, RTGS, NEFT, Telegram.</span> <span class="ans-true">Answer: Telegram</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">64. Whole Life Policy, Endowment Policy, Term Policy, Fire Policy.</span> <span class="ans-true">Answer: Fire Policy</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">65. Valued Policy, Average Policy, Floating Policy, Endowment Policy.</span> <span class="ans-true">Answer: Endowment Policy</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">66. Voyage Policy, Time Policy, Mixed Policy, Child Policy.</span> <span class="ans-true">Answer: Child Policy</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">67. Road Transport, Rail Transport, Air Transport, Time Travel.</span> <span class="ans-true">Answer: Time Travel</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">68. Private Warehouse, Public Warehouse, Bonded Warehouse, Information Warehouse.</span> <span class="ans-true">Answer: Information Warehouse</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">69. Indemnity, Subrogation, Mitigation, Profitability.</span> <span class="ans-true">Answer: Profitability</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">70. Inland Letter, Envelope, Parcel, Courier.</span> <span class="ans-true">Answer: Courier</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">71. Intangibility, Inseparability, Inconsistency, Tangibility.</span> <span class="ans-true">Answer: Tangibility</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">72. Perishability, Non-transferability, Consumer participation, Manufacturing.</span> <span class="ans-true">Answer: Manufacturing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">73. RBI, SBI, Bank of India, Axis Bank.</span> <span class="ans-true">Answer: RBI</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">74. Axis Bank, HDFC Bank, ICICI Bank, State Bank of India.</span> <span class="ans-true">Answer: State Bank of India</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">75. Citi Bank, HSBC, Standard Chartered, Bank of Maharashtra.</span> <span class="ans-true">Answer: Bank of Maharashtra</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">76. Primary Credit Societies, District Central Bank, State Co-operative Bank, Central Bank.</span> <span class="ans-true">Answer: Central Bank</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">77. IFCI, SFC, MSFC, RBI.</span> <span class="ans-true">Answer: RBI</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">78. Cash Credit, Overdraft, Discounting of bills, Fixed Deposit.</span> <span class="ans-true">Answer: Fixed Deposit</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">79. Portfolio Management, Fund Transfer, Forex Transactions, Locker Facility.</span> <span class="ans-true">Answer: Locker Facility</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">80. Issue of Drafts, Locker Facility, Project Reports, Dematerialisation.</span> <span class="ans-true">Answer: Dematerialisation</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">81. ATM, Credit Cards, Debit Cards, Passbook.</span> <span class="ans-true">Answer: Passbook</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">82. RTGS, NEFT, IMPS, Telegraph.</span> <span class="ans-true">Answer: Telegraph</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">83. Utmost good faith, Insurable interest, Indemnity, Monopoly.</span> <span class="ans-true">Answer: Monopoly</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">84. Subrogation, Contribution, Mitigation, Depreciation.</span> <span class="ans-true">Answer: Depreciation</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">85. Annuity Policy, Money-back Policy, Child Insurance, Specific Policy.</span> <span class="ans-true">Answer: Specific Policy</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">86. Blanket Policy, Port Risk Policy, Composite Policy, Comprehensive Policy.</span> <span class="ans-true">Answer: Comprehensive Policy</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">87. Floating Policy, Excess Policy, Reinstatement Policy, Single Vessel Policy.</span> <span class="ans-true">Answer: Single Vessel Policy</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">88. Monorail, Metro, Ropeway, Bull cart.</span> <span class="ans-true">Answer: Bull cart</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">89. Storage, Price Stabilization, Risk bearing, Directing.</span> <span class="ans-true">Answer: Directing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">90. Financing, Grading, Packing, Communication.</span> <span class="ans-true">Answer: Communication</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">91. Duty paid Warehouse, Government Warehouse, Co-operative Warehouse, Data Warehouse.</span> <span class="ans-true">Answer: Data Warehouse</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">92. Business Post, Logistics Post, Bill Mail Service, Electronic Money Transfer.</span> <span class="ans-true">Answer: Electronic Money Transfer</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">93. Electronic Money Transfer, Instant Money Order, International Money Transfer, Retail Post.</span> <span class="ans-true">Answer: Retail Post</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">94. Courier Service, Internet, Email, Postcard.</span> <span class="ans-true">Answer: Postcard</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">95. Jana Small Finance Bank, AU Small Finance Bank, Equitas Small Finance Bank, Axis Bank.</span> <span class="ans-true">Answer: Axis Bank</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">96. Indian Post Payment Bank, Airtel Payment Bank, Paytm Payment Bank, State Bank of India.</span> <span class="ans-true">Answer: State Bank of India</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">97. Passenger train, Goods train, Rajdhani express, Aeroplane.</span> <span class="ans-true">Answer: Aeroplane</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">98. Boats, Steamers, Launches, Trucks.</span> <span class="ans-true">Answer: Trucks</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">99. Air India, Spicejet, Quantas Airways, Indian Railways.</span> <span class="ans-true">Answer: Indian Railways</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">100. Time Utility, Place Utility, Form Utility, Warehousing Utility.</span> <span class="ans-true">Answer: Warehousing Utility</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">101. Central Warehousing Corporation, State Warehousing Corporation, Food Corporation of India, Reserve Bank of India.</span> <span class="ans-true">Answer: Reserve Bank of India</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">102. Consequential Loss Policy, Sprinkler Leakage Policy, Comprehensive Policy, Annuity Policy.</span> <span class="ans-true">Answer: Annuity Policy</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">103. Insured, Insurer, Premium, Manager.</span> <span class="ans-true">Answer: Manager</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">104. Proposal, Policy, Claim, Dividend.</span> <span class="ans-true">Answer: Dividend</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">105. Banking, Insurance, Transport, Manufacturing.</span> <span class="ans-true">Answer: Manufacturing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">106. Short Term Loans, Medium Term Loans, Long Term Loans, Cash Credit.</span> <span class="ans-true">Answer: Cash Credit</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">107. Gold related services, Underwriting services, Gift Cheques, Accepting Deposits.</span> <span class="ans-true">Answer: Accepting Deposits</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">108. E-banking, Virtual Banking, Mobile Banking, Postal Banking.</span> <span class="ans-true">Answer: Postal Banking</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">109. Overdraft, Discounting of bills, Cash Credit, Savings Account.</span> <span class="ans-true">Answer: Savings Account</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">110. Retail Post, e-Post, Logistics Post, Courier.</span> <span class="ans-true">Answer: Courier</span><span class="sys-cite">[cite: 4]</span></li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 8: Marketing</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">111. Place Concept, Commodity Concept, Exchange Concept, Gravity Concept.</span> <span class="ans-true">Answer: Gravity Concept</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">112. Local Market, National Market, International Market, Supermarket.</span> <span class="ans-true">Answer: Supermarket</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">113. Very Short Period, Short Period, Long Period, Light Year.</span> <span class="ans-true">Answer: Light Year</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">114. Wholesale Market, Retail Market, Monopoly Market.</span> <span class="ans-true">Answer: Monopoly Market</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">115. Primary Market, Secondary Market, Terminal Market, Black Market.</span> <span class="ans-true">Answer: Black Market</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">116. Monopoly, Duopoly, Oligopoly, Perfect Market.</span> <span class="ans-true">Answer: Perfect Market</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">117. Product, Price, Place, Population.</span> <span class="ans-true">Answer: Population</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">118. People, Process, Physical Environment, Pricing.</span> <span class="ans-true">Answer: Pricing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">119. Standardisation, Grading, Packaging, Sleeping.</span> <span class="ans-true">Answer: Sleeping</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">120. Advertising, Personal Selling, Publicity, Manufacturing.</span> <span class="ans-true">Answer: Manufacturing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">121. Marketing Research, Buying and Assembling, Market Planning, Controlling.</span> <span class="ans-true">Answer: Controlling</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">122. Standardisation, Grading, Packaging, Subrogation.</span> <span class="ans-true">Answer: Subrogation</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">123. Branding, Pricing, Promotional Channels, Insuring.</span> <span class="ans-true">Answer: Insuring</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">124. Distribution, Transportation, Warehousing, Directing.</span> <span class="ans-true">Answer: Directing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">125. Increase in Standard of Living, Provides Employment, Consumer Awareness, Decrease in Sales.</span> <span class="ans-true">Answer: Decrease in Sales</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">126. Increases Awareness, Increases Sales, Creates Trust, Decreases National Income.</span> <span class="ans-true">Answer: Decreases National Income</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">127. Promotes Product Awareness, Provides Quality Products, Helps in Selection, Creates Monopoly.</span> <span class="ans-true">Answer: Creates Monopoly</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">128. Commodity Market, Capital Market, Regulated Market, Super Market.</span> <span class="ans-true">Answer: Super Market</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">129. Regulated Market, Unregulated Market, Free Market, Central Market.</span> <span class="ans-true">Answer: Central Market</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">130. Monopoly, Duopoly, Monopsony, Autocracy.</span> <span class="ans-true">Answer: Autocracy</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">131. Area Concept, Demand Concept, Digital Concept, Insurance Concept.</span> <span class="ans-true">Answer: Insurance Concept</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">132. Philip Kotler, E. Jerome McCarthy, Booms & Bitner, Henry Fayol.</span> <span class="ans-true">Answer: Henry Fayol</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">133. Product Development, Standardisation, Packaging, Budgeting.</span> <span class="ans-true">Answer: Budgeting</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">134. Customer Support Service, Pricing, Distribution, Staffing.</span> <span class="ans-true">Answer: Staffing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">135. Advertising, Publicity, Sales Promotion, Production.</span> <span class="ans-true">Answer: Production</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">136. Material handling, Inventory control, Order processing, Banking.</span> <span class="ans-true">Answer: Banking</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">137. 4Ps, 7Ps, Marketing Mix, 10Ps.</span> <span class="ans-true">Answer: 10Ps</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">138. Buyer, Seller, Exchange, Dictator.</span> <span class="ans-true">Answer: Dictator</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">139. Consumer Satisfaction, Regular supply of goods, Quality Products, High Distribution Cost.</span> <span class="ans-true">Answer: High Distribution Cost</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">140. Basis for Making Decisions, Source of New Ideas, Tackling the Competition, Minimizing Employment.</span> <span class="ans-true">Answer: Minimizing Employment</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">141. Paul Mazur, Converse, Huegy, Mitchell, Albert Einstein.</span> <span class="ans-true">Answer: Albert Einstein</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">142. Tangible features, Intangible features, Core product features, Celestial features.</span> <span class="ans-true">Answer: Celestial features</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">143. Customer oriented, Long-term oriented, Satisfaction focused, Production oriented.</span> <span class="ans-true">Answer: Production oriented</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">144. Indirect activity, Wider concept, Satisfaction of consumers, Direct activity.</span> <span class="ans-true">Answer: Direct activity</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">145. Pre-sales service, Consumer helpline, After sales service, Tax collection.</span> <span class="ans-true">Answer: Tax collection</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">146. Size, Shape, Quality, Religion.</span> <span class="ans-true">Answer: Religion</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">147. Bottles, Container, Plastic bags, Bricks.</span> <span class="ans-true">Answer: Bricks</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">148. Trademark, Brand Name, Identity, Warehouse.</span> <span class="ans-true">Answer: Warehouse</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">149. Television, Newspapers, Internet, Telepathy.</span> <span class="ans-true">Answer: Telepathy</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">150. E-Commerce Portals, Mobile Applications, Internet, Bullock Cart.</span> <span class="ans-true">Answer: Bullock Cart</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">151. Mercatus, Trade, Merchandise, Monopoly.</span> <span class="ans-true">Answer: Monopoly</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">152. Area covered, Time, Volume of Transaction, Weight.</span> <span class="ans-true">Answer: Weight</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">153. Importance, Nature of Goods, Regulation, Height.</span> <span class="ans-true">Answer: Height</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">154. Agricultural products, Forest products, Food grains, Computer Software.</span> <span class="ans-true">Answer: Computer Software</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">155. Market Planning, Product Development, Standardisation, Staffing.</span> <span class="ans-true">Answer: Staffing</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">156. Telephone, Mobile, Computer, Typewriter.</span> <span class="ans-true">Answer: Typewriter</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">157. Single seller, Maladjustment in demand, Imperfect knowledge, Perfect knowledge.</span> <span class="ans-true">Answer: Perfect knowledge</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">158. Right product, Right time, Right price, Right religion.</span> <span class="ans-true">Answer: Right religion</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">159. Location, Layout, Interior design, Motivation.</span> <span class="ans-true">Answer: Motivation</span><span class="sys-cite">[cite: 4]</span></li>
+            <li><span class="q-text">160. Target market, Speed, Reliability, Monopoly.</span> <span class="ans-true">Answer: Monopoly</span><span class="sys-cite">[cite: 4]</span></li>
+        </ul>
+
+    </div>
+
+    <!-- Scroll Tracking SVG Arrow (No shadow, bottom right) -->
+    <button id="backToTop" onclick="scrollToTop()">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <footer>
+        Created by Gagan Nishad
+    </footer>
+
+    <script>
+        // Menu Toggle
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburger');
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target) && mobileMenu.classList.contains('open')) {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // Back to Top Logic (Scroll Only)
+        let isScrolling;
+        window.addEventListener('scroll', function (event) {
+            const topBtn = document.getElementById("backToTop");
+            window.clearTimeout(isScrolling);
+            
+            if (window.scrollY > 200) {
+                topBtn.style.opacity = "1";
+                topBtn.style.visibility = "visible";
+            } else {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }
+
+            isScrolling = setTimeout(function() {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }, 1200); 
+        }, false);
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Security Lockouts
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('copy', event => event.preventDefault());
+        document.addEventListener('cut', event => event.preventDefault());
+        document.addEventListener('paste', event => event.preventDefault());
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "F12" || e.keyCode === 44) {
+                e.preventDefault(); return false;
+            }
+            if (e.ctrlKey || e.metaKey) {
+                const key = e.key.toLowerCase();
+                if (['c', 'a', 'x', 'v', 'p', 'u', 's', 'i', '+', '-', '='].includes(key)) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        document.addEventListener('wheel', function(e) {
+            if (e.ctrlKey || e.metaKey) e.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(event) {
+            if (event.scale !== 1 && event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) event.preventDefault();
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>

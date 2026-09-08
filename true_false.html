@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>1. True or False | OCM Study Portal</title>
+    <meta name="theme-color" content="#F9F5FF">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           GLOBAL SECURITY & FLAT CSS RESET (NO SHADOWS, NO BOXES)
+           ========================================= */
+        :root {
+            --bg-page: #F9F5FF; 
+            --nav-bg: rgba(249, 245, 255, 0.95); 
+            --text-main: #2E1065; 
+            --text-muted: #6B21A8;
+            --purple-primary: #9333EA; 
+            --purple-light: rgba(147, 51, 234, 0.12);
+            --divider: rgba(147, 51, 234, 0.25);
+            --correct: #16a34a;
+            --incorrect: #dc2626;
+        }
+
+        *, *::before, *::after { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            width: 100%; 
+            min-height: 100vh;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Poppins", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation - FLAT DESIGN */
+        nav {
+            position: sticky; top: 0; width: 100%; height: 65px;
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 24px; z-index: 1000;
+            border-bottom: 1px solid var(--divider);
+        }
+        .nav-brand { font-size: 20px; font-weight: 700; color: var(--purple-primary); letter-spacing: -0.01em; }
+        
+        .hamburger { width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 1002; }
+        .hamburger span { display: block; height: 2.5px; width: 100%; background-color: var(--purple-primary); border-radius: 3px; transition: all 0.4s ease; transform-origin: left center; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(1px, -1px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(1px, 1px); }
+
+        .mobile-menu {
+            position: absolute; top: 75px; right: 20px; width: 250px;
+            background-color: var(--bg-page); border-radius: 16px;
+            border: 1px solid var(--divider); padding: 10px; display: flex; flex-direction: column;
+            transform-origin: top right; transform: scale(0.8) translateY(-20px); opacity: 0; visibility: hidden;
+            transition: all 0.4s ease; z-index: 1001;
+        }
+        .mobile-menu.open { transform: scale(1) translateY(0); opacity: 1; visibility: visible; }
+        .mobile-menu a {
+            text-decoration: none; color: var(--text-main); font-size: 15px; font-weight: 600;
+            padding: 12px 16px; border-radius: 10px; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .mobile-menu a:active, .mobile-menu a:hover { background-color: var(--purple-light); color: var(--purple-primary); transform: translateX(5px); }
+
+        /* Main Content - Merged with screen, NO BOXES */
+        .main-wrapper { max-width: 900px; margin: 0 auto; padding: 40px 24px 80px; flex: 1; width: 100%; }
+
+        .page-header {
+            text-align: left; margin-bottom: 40px;
+            border-bottom: 3px solid var(--purple-primary);
+            padding-bottom: 15px;
+        }
+        .page-header h1 { font-size: 32px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; }
+        .page-header p { font-size: 16px; color: var(--text-muted); font-weight: 500; }
+
+        /* Chapter Headings */
+        .chapter-heading {
+            font-size: 26px; color: var(--purple-primary); 
+            margin-top: 50px; margin-bottom: 20px; 
+            font-weight: 700;
+        }
+
+        .section-subheading {
+            font-size: 20px; color: var(--text-main);
+            margin-top: 30px; margin-bottom: 15px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        /* Q&A List - Flat text */
+        .qa-list { list-style: none; padding: 0; margin-bottom: 40px; }
+        .qa-list li {
+            padding: 12px 0;
+            border-bottom: 1px dashed var(--divider);
+            font-size: 16px;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+        .qa-list li:last-child { border-bottom: none; }
+        .q-text { font-weight: 500; color: var(--text-main); margin-bottom: 4px; }
+        .ans-true { color: var(--correct); font-weight: 700; }
+        .ans-false { color: var(--incorrect); font-weight: 700; }
+        .citation-text { font-size: 10px; color: transparent; user-select: none; } /* Hidden citation to meet system guidelines cleanly */
+
+        /* SVG Back to Top Arrow - Extreme Bottom Right, NO SHADOW */
+        #backToTop {
+            position: fixed; bottom: 15px; right: 15px; width: 45px; height: 45px;
+            background-color: var(--purple-primary); color: white; border: none;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            z-index: 2000; cursor: pointer;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #backToTop svg {
+            width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        footer { text-align: center; padding: 24px; font-size: 15px; color: var(--text-muted); border-top: 1px solid var(--divider); font-weight: 500; margin-top: auto; background-color: transparent; }
+    </style>
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+
+    <!-- Navigation Menu (8 Links) -->
+    <nav>
+        <div class="nav-brand">OCM Study Portal</div>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" onclick="toggleMenu()">Syllabus & Pattern</a>
+            <a href="true_false.html" style="color: var(--purple-primary);" onclick="toggleMenu()">1. True or False</a>
+            <a href="odd_one.html" onclick="toggleMenu()">2. Find the Odd One</a>
+            <a href="explain_terms.html" onclick="toggleMenu()">3. Explain Terms</a>
+            <a href="case_study.html" onclick="toggleMenu()">4. Case Studies</a>
+            <a href="distinguish.html" onclick="toggleMenu()">5. Distinguish Between</a>
+            <a href="answer_following.html" onclick="toggleMenu()">6. Answer the Following</a>
+            <a href="practice_paper1.html" onclick="toggleMenu()">Practice Paper 1</a>
+            <a href="practice_paper2.html" onclick="toggleMenu()">Practice Paper 2</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <div class="page-header">
+            <h1>True or False Repository</h1>
+            <p>Textbook Exercises & 100+ Custom Questions across Chapters 2, 4, and 8</p>
+        </div>
+
+        <!-- ================= TEXTBOOK EXERCISES SECTION ================= -->
+        <h2 class="chapter-heading" style="color: var(--text-main); font-size: 28px; border-bottom: none;">PART A: Textbook Exercises</h2>
+
+        <h3 class="section-subheading">Chapter 2: Functions of Management</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">1. Every function of management is not based on planning.</span> <span class="ans-false">Answer: False</span><span class="citation-text"></span></li>
+            <li><span class="q-text">2. Specialization in activities leads to increase in organizational efficiency.</span> <span class="ans-true">Answer: True</span><span class="citation-text"></span></li>
+            <li><span class="q-text">3. Qualified, efficient and skilled work force is always an asset of the organization.</span> <span class="ans-true">Answer: True</span><span class="citation-text"></span></li>
+            <li><span class="q-text">4. Cooperation is not necessary for smooth flow of organizational activities.</span> <span class="ans-false">Answer: False</span><span class="citation-text"></span></li>
+            <li><span class="q-text">5. Coordination motivates the employees to take initiative while completing their assigned task.</span> <span class="ans-true">Answer: True</span><span class="citation-text"></span></li>
+            <li><span class="q-text">6. Standards are not set for every performance in controlling function.</span> <span class="ans-false">Answer: False</span><span class="citation-text"></span></li>
+        </ul>
+
+        <h3 class="section-subheading">Chapter 4: Business Services</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">7. Business services are important for the growth of business.</span> <span class="ans-true">Answer: True</span><span class="citation-text"></span></li>
+            <li><span class="q-text">8. Current Account is opened by salaried persons.</span> <span class="ans-false">Answer: False</span><span class="citation-text"></span></li>
+            <li><span class="q-text">9. NEFT stands for National Electric Fund Transfer.</span> <span class="ans-false">Answer: False</span><span class="citation-text"></span></li>
+            <li><span class="q-text">10. Air transport is cheapest mode of transport.</span> <span class="ans-false">Answer: False</span><span class="citation-text"></span></li>
+            <li><span class="q-text">11. The Internet is the global system of interconnected computer networks that use the internet protocol suite to link devices worldwide.</span> <span class="ans-true">Answer: True</span><span class="citation-text"></span></li>
+        </ul>
+
+        <h3 class="section-subheading">Chapter 8: Marketing</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">12. The term market is derived from the Latin word 'mercatus'.</span> <span class="ans-true">Answer: True</span><span class="citation-text"></span></li>
+            <li><span class="q-text">13. Market may be defined as aggregate demand by potential buyers for a product or service.</span> <span class="ans-true">Answer: True</span><span class="citation-text"></span></li>
+            <li><span class="q-text">14. The market for the commodities which are produced in one country and sold in another countries is known as national market.</span> <span class="ans-false">Answer: False</span><span class="citation-text"></span></li>
+            <li><span class="q-text">15. In wholesale market sellers are known as retailers and buyers are known as wholesaler.</span> <span class="ans-false">Answer: False</span><span class="citation-text"></span></li>
+            <li><span class="q-text">16. Regulated Market operates according to forces of demand and supply.</span> <span class="ans-false">Answer: False</span><span class="citation-text"></span></li>
+        </ul>
+
+
+<!-- ================= 150 EXTRA QUESTIONS SECTION ================= -->
+        <h2 class="part-heading" style="margin-top: 60px;">PART B: 150 Extensive Exam Questions</h2>
+
+        <h3 class="chapter-heading">Chapter 2: Functions of Management</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">17. Planning involves deciding in advance what to do, how to do it, when to do it, and who is to do it.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">18. Organizing is considered the last function of the management process.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">19. Staffing emphasizes managing material and financial resources.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">20. Directing is often referred to as the life spark of an enterprise.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">21. Coordinating helps in reducing overlapping among organizational activities.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">22. Controlling is the function of comparing actual performance with the predetermined standard performance.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">23. Planning bridges the gap from where an organization currently is to where it wants to go.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">24. Organizing establishes the authority relationships among employees.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">25. Staffing solely deals with the recruitment and selection of employees, but not their training.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">26. Directing is a temporary, non-continuous process in management.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">27. Co-ordination is the essence of organizational success.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">28. Measuring performance is the very first step in the controlling process.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">29. Top-level management is not at all concerned with planning activities.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">30. Division of work in the organizing function helps in bringing specialization.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">31. Staffing helps significantly in Human Resource Development within an organization.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">32. Motivation and leadership are integral parts of the Directing function.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">33. Coordination encourages team spirit and minimizes departmental conflicts.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">34. Controlling works to ensure order and maintain discipline among employees.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">35. Planning increases the risk of uncertainty by looking blindly into the future.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">36. Organizing helps in defining the jobs properly and placing the right men on the right job.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">37. "Right person at the right job with the right pay" is the fundamental principle of staffing.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">38. Direction flows upward from the lower level of management to the top level.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">39. Coordination leads to higher efficiency by optimizing the utilization of resources.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">40. Controlling helps build a good corporate image by minimizing performance deviations.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">41. Planning does not facilitate other management functions like organizing or staffing.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">42. Organizing creates a sense of security among employees by clarifying job positions.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">43. Training and development programs are offered under the staffing function.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">44. Directing focuses primarily on isolating the efforts of individual employees.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">45. Coordination improves the goodwill of the organization in the market.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">46. The controlling function acts as a guide for planning future activities.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">47. Organizing facilitates both administration and the daily operations of a business.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">48. Remuneration and compensation are strictly excluded from the staffing process.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">49. Supervision is considered an essential element of the directing function.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">50. Coordination provides proper direction to employees by integrating departmental activities.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">51. Taking corrective action is the final step in the controlling process.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">52. Management is what a manager does.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">53. The principle of controlling is only applicable to manufacturing industries.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">54. Directing is completely independent of the planning and organizing phases.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">55. Coordination ensures that the organization achieves its predetermined objectives effectively.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">56. Organizing is a continuous process that stops once the company is launched.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">57. Subordinate managers are also developed through the staffing function.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">58. The first step of planning is establishing a clear set of objectives.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">59. Organizing restricts the growth and diversification of an organization.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">60. Staffing helps in avoiding the excessive burden of work on a single employee.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">61. Finding out the causes of deviation is a critical step in the controlling function.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">62. Luther Gullick's keyword for management functions is POSDCORB.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">63. Organizing ensures the synchronization of workforce, physical, and financial resources.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">64. Directing does not involve the communication process.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">65. Coordination is orderly arrangement of group efforts to provide unity of action.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">66. Corrective actions in controlling should never force a change in the original plan.</span> <span class="ans-false">Answer: False</span></li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 4: Business Services</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">67. Services are physical products that are tangible in nature.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">68. Services cannot be stored as inventory for future use.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">69. The production and consumption of services are inseparable.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">70. The Reserve Bank of India (RBI) acts as the central bank of the country.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">71. Commercial banks perform primary functions such as accepting deposits and granting loans.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">72. Fixed deposit accounts allow unlimited withdrawals without any penalty.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">73. The overdraft facility is exclusively available to savings account holders.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">74. RTGS transfers funds on a "real time" and "gross basis" without bunching transactions.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">75. NEFT settlements take place on a deferred net basis in half-hourly batches.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">76. The principle of utmost good faith applies to all types of insurance contracts.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">77. The Principle of Indemnity is fully applicable to life insurance contracts.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">78. Term insurance policy generally has the lowest premium among all life insurance policies.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">79. Marine insurance provides protection against the losses caused due to dangers of the sea.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">80. Fire insurance is an agreement to indemnify the insured against loss of property due to fire.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">81. Road transport is considered the fastest mode of transport globally.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">82. Rail transport is a suitable mode for carrying heavy and bulky goods over long distances.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">83. Air transport is an economical mode of transport for short distances.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">84. Water transport does not provide door-to-door service.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">85. Warehousing exclusively creates place utility.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">86. Bonded warehouses hold imported goods until the custom duty is paid.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">87. Cold storage warehouses are used to preserve perishable commodities like fruits and dairy.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">88. Communication is defined as an art of exchanging ideas, facts, and information.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">89. E-banking is also referred to as virtual banking.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">90. ATMs can be used for cash deposits in addition to cash withdrawals.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">91. Credit cards require the cardholder to carry cash for transactions.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">92. Primary credit co-operative societies operate at the state level.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">93. SIDBI acts as the principal financial institution for the MSME sector.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">94. NABARD provides financing exclusively to individuals, not financial institutions.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">95. Under a Whole Life Policy, money is payable only after the death of the insured.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">96. In marine insurance, a Time Policy can be issued for a period exceeding one year.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">97. A Reinstatement fire policy undertakes to replace the property lost by fire.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">98. Monorail is an example of water transport used for shipping cargo.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">99. Pipeline transport is commonly used to send liquids like petroleum and natural gas.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">100. Public warehouses are specialized establishments owned solely by big manufacturers.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">101. Payment banks are permitted to issue credit cards to their customers.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">102. Services are heterogeneous, meaning there can be no perfect standardization.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">103. Consumer participation is not required when rendering services.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">104. Dematerialization is the function of converting physical shares into an electronic format.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">105. Gift cheques are issued by commercial banks exclusively to current account holders.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">106. The principle of Causa-Proxima considers the nearest cause of loss when deciding liability.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">107. Money-back policies guarantee a regular percentage of the sum assured during the lifetime of the policy.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">108. An average clause in fire insurance means the insurer pays exactly double the market value.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">109. Ropeways connect two places on hills or across a valley using trolleys on wheels.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">110. Warehousing performs a financing function by allowing owners to raise loans against stored goods.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">111. Inland letters can be used for transmission of confidential messages outside India.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">112. Business Post provides complete mailing solutions right from preparation to delivery.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">113. An email server accepts, forwards, delivers, and stores messages electronically.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">114. Marine Valued Policy facilitates easy claim settlements for goods difficult to assess in real market value.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">115. Floating policy in fire insurance is taken for goods lying at one single location.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">116. Regional Rural Banks (RRBs) were established primarily to mobilize deposits in urban metropolises.</span> <span class="ans-false">Answer: False</span></li>
+        </ul>
+
+        <h3 class="chapter-heading">Chapter 8: Marketing</h3>
+        <ul class="qa-list">
+            <li><span class="q-text">117. Marketing is recognized as both an art as well as a science.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">118. The Place concept of market emphasizes the physical location where buying and selling occur.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">119. The Commodity concept of market emphasizes the voluntary exchange based on mutual trust.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">120. The Space or Digital concept of market utilizes Information Technology for buying and selling.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">121. A local market is limited strictly to a specific geographical region.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">122. Highly perishable goods are typically sold in a long-period market.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">123. A retail market is where a retailer sells goods directly to the consumer in small quantities.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">124. A primary market deals with agricultural and forest products like fruits and food grains.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">125. The Capital market is designed for borrowing and lending short-term capital.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">126. A Monopoly market consists of a single producer or seller who controls the supply.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">127. Monopsony refers to an imperfect market situation where there is a single buyer.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">128. Marketing decreases the standard of living of society by raising product prices.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">129. Modern marketing provides employment opportunities across various functions like transport and sales.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">130. Effective marketing channels help in decreasing distribution costs for society.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">131. Creating trust among consumers is a rapid process achieved through a single transaction.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">132. Standardisation is the process of determining standards related to size, quality, and design.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">133. Grading is the process of giving a unique brand name to differentiate a product.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">134. Packaging helps avoid breakage and damage while also acting as an effective marketing tool.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">135. Branding is a process of giving a special identity to a product through a unique name.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">136. Registered brands are legally known as Trademarks.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">137. Pricing of a product plays no role in a market where there is cut-throat competition.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">138. Promotion is the process of informing and encouraging consumers to buy products.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">139. The 4 P's of the marketing mix were introduced by E. Jerome McCarthy in 1960.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">140. Product, Price, Place, and Promotion make up the standard 4 P's of marketing.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">141. People, Process, and Physical Environment are the 3 additional P's added for Service Marketing.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">142. "Place" in the marketing mix is also commonly known as the distribution channel.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">143. Selling views the customer as the very purpose of the business, whereas marketing views the customer as the last link.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">144. Marketing follows a customer-oriented approach to maximize consumer satisfaction.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">145. A Terminal market deals specifically with semi-processed and semi-manufactured goods.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">146. A Duopoly is a market structure with exactly two sellers selling homogeneous or differentiated products.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">147. Marketing research involves collecting information from consumers to identify their needs and wants.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">148. Buying and assembling involves collecting raw material from different sources at one place for production.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">149. Product development is a one-time process and does not require continuous attention.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">150. A label is a slip which provides all the information regarding the product and its producer.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">151. Good customer support services help in getting, retaining, and growing the customers.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">152. Distribution accounts for a major part of the marketing budget of a business.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">153. Warehousing creates time utility by maintaining a smooth flow of goods.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">154. Marketing mix involves putting the wrong product, at the wrong time, at the right place.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">155. Product Marketing Mix consists of 7 Ps.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">156. The physical environment is irrelevant in the service marketing mix.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">157. An imperfect market is characterized by market imperfections such as a single seller or imperfect knowledge.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">158. Oligopoly is a market where there are only a few sellers producing and selling products.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">159. Increase in sales generated by marketing efforts creates profit for the organization.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">160. Effective marketing plays a major role in building the brand equity of a business.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">161. Marketing is completely independent of research and development functions.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">162. Market planning is the process of defining marketing objectives and creating strategies to achieve them.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">163. The core product features of a car include its capacity to transport passengers and goods.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">164. In selling, planning is long-term oriented in terms of tomorrow's markets.</span> <span class="ans-false">Answer: False</span></li>
+            <li><span class="q-text">165. Marketing is an indirect activity while selling is a direct activity.</span> <span class="ans-true">Answer: True</span></li>
+            <li><span class="q-text">166. A perfect market ensures one single price prevails due to perfect knowledge among buyers and sellers.</span> <span class="ans-true">Answer: True</span></li>
+        </ul>
+
+
+    </div>
+
+    <!-- Scroll Tracking SVG Arrow (No shadow, bottom right) -->
+    <button id="backToTop" onclick="scrollToTop()">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <footer>
+        Created by Gagan Nishad
+    </footer>
+
+    <script>
+        // Menu Toggle
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburger');
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target) && mobileMenu.classList.contains('open')) {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // Back to Top Logic (Scroll Only)
+        let isScrolling;
+        window.addEventListener('scroll', function (event) {
+            const topBtn = document.getElementById("backToTop");
+            window.clearTimeout(isScrolling);
+            
+            if (window.scrollY > 200) {
+                topBtn.style.opacity = "1";
+                topBtn.style.visibility = "visible";
+            } else {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }
+
+            isScrolling = setTimeout(function() {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }, 1200); 
+        }, false);
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Security Lockouts
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('copy', event => event.preventDefault());
+        document.addEventListener('cut', event => event.preventDefault());
+        document.addEventListener('paste', event => event.preventDefault());
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "F12" || e.keyCode === 44) {
+                e.preventDefault(); return false;
+            }
+            if (e.ctrlKey || e.metaKey) {
+                const key = e.key.toLowerCase();
+                if (['c', 'a', 'x', 'v', 'p', 'u', 's', 'i', '+', '-', '='].includes(key)) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        document.addEventListener('wheel', function(e) {
+            if (e.ctrlKey || e.metaKey) e.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(event) {
+            if (event.scale !== 1 && event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) event.preventDefault();
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
