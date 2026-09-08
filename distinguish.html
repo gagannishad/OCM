@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>5. Distinguish Between | OCM Study Portal</title>
+    <meta name="theme-color" content="#F9F5FF">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           GLOBAL SECURITY & FLAT CSS RESET (NO SHADOWS, NO BOXES)
+           ========================================= */
+        :root {
+            --bg-page: #F9F5FF; 
+            --nav-bg: rgba(249, 245, 255, 0.95); 
+            --text-main: #2E1065; 
+            --text-muted: #6B21A8;
+            --purple-primary: #9333EA; 
+            --purple-light: rgba(147, 51, 234, 0.12);
+            --divider: rgba(147, 51, 234, 0.3);
+        }
+
+        *, *::before, *::after { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            width: 100%; 
+            min-height: 100vh;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Poppins", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation - FLAT DESIGN */
+        nav {
+            position: sticky; top: 0; width: 100%; height: 65px;
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 24px; z-index: 1000;
+            border-bottom: 1px solid var(--divider);
+        }
+        .nav-brand { font-size: 20px; font-weight: 700; color: var(--purple-primary); letter-spacing: -0.01em; }
+        
+        .hamburger { width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 1002; }
+        .hamburger span { display: block; height: 2.5px; width: 100%; background-color: var(--purple-primary); border-radius: 3px; transition: all 0.4s ease; transform-origin: left center; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(1px, -1px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(1px, 1px); }
+
+        .mobile-menu {
+            position: absolute; top: 75px; right: 20px; width: 250px;
+            background-color: var(--bg-page); border-radius: 16px;
+            border: 1px solid var(--divider); padding: 10px; display: flex; flex-direction: column;
+            transform-origin: top right; transform: scale(0.8) translateY(-20px); opacity: 0; visibility: hidden;
+            transition: all 0.4s ease; z-index: 1001;
+        }
+        .mobile-menu.open { transform: scale(1) translateY(0); opacity: 1; visibility: visible; }
+        .mobile-menu a {
+            text-decoration: none; color: var(--text-main); font-size: 15px; font-weight: 600;
+            padding: 12px 16px; border-radius: 10px; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .mobile-menu a:active, .mobile-menu a:hover { background-color: var(--purple-light); color: var(--purple-primary); transform: translateX(5px); }
+
+        /* Main Content - Merged with screen, NO BOXES */
+        .main-wrapper { max-width: 1000px; margin: 0 auto; padding: 40px 24px 80px; flex: 1; width: 100%; }
+
+        .page-header {
+            text-align: left; margin-bottom: 40px;
+            border-bottom: 3px solid var(--purple-primary);
+            padding-bottom: 15px;
+        }
+        .page-header h1 { font-size: 32px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; }
+        .page-header p { font-size: 16px; color: var(--text-muted); font-weight: 500; }
+
+        /* Chapter Headings */
+        .chapter-heading {
+            font-size: 26px; color: var(--purple-primary); 
+            margin-top: 60px; margin-bottom: 25px; 
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .table-title {
+            font-size: 18px; color: var(--text-main);
+            margin-top: 40px; margin-bottom: 15px;
+            font-weight: 700;
+            border-left: 4px solid var(--purple-primary);
+            padding-left: 10px;
+        }
+
+        /* Responsive Flat Tables */
+        .table-container {
+            width: 100%;
+            overflow-x: auto; 
+            margin-bottom: 20px;
+            border: 1px solid var(--divider);
+            background-color: transparent;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px; 
+        }
+        
+        th, td {
+            border: 1px solid var(--divider);
+            padding: 16px;
+            text-align: left;
+            vertical-align: top;
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        th {
+            background-color: var(--purple-light);
+            color: var(--purple-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 0.03em;
+        }
+        
+        /* Highlight first column (Points) */
+        td:first-child {
+            font-weight: 600;
+            color: var(--text-main);
+            background-color: rgba(147, 51, 234, 0.04);
+            width: 15%;
+        }
+
+        /* SVG Back to Top Arrow - Extreme Bottom Right, NO SHADOW */
+        #backToTop {
+            position: fixed; bottom: 15px; right: 15px; width: 45px; height: 45px;
+            background-color: var(--purple-primary); color: white; border: none;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            z-index: 2000; cursor: pointer;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #backToTop svg {
+            width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        footer { text-align: center; padding: 24px; font-size: 15px; color: var(--text-muted); border-top: 1px solid var(--divider); font-weight: 500; margin-top: auto; background-color: transparent; }
+    </style>
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+
+    <!-- Navigation Menu (8 Links) -->
+    <nav>
+        <div class="nav-brand">OCM Study Portal</div>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" onclick="toggleMenu()">Syllabus & Pattern</a>
+            <a href="true_false.html" onclick="toggleMenu()">1. True or False</a>
+            <a href="odd_one.html" onclick="toggleMenu()">2. Find the Odd One</a>
+            <a href="explain_terms.html" onclick="toggleMenu()">3. Explain Terms</a>
+            <a href="case_study.html" onclick="toggleMenu()">4. Case Studies</a>
+            <a href="distinguish.html" style="color: var(--purple-primary);" onclick="toggleMenu()">5. Distinguish Between</a>
+            <a href="answer_following.html" onclick="toggleMenu()">6. Answer the Following</a>
+            <a href="practice_paper1.html" onclick="toggleMenu()">Practice Paper 1</a>
+            <a href="practice_paper2.html" onclick="toggleMenu()">Practice Paper 2</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <div class="page-header">
+            <h1>Distinguish Between</h1>
+            <p>23 Detailed Comparative Studies directly from the Original Textbook text covering all exercise questions across Chapters 2, 4, and 8</p>
+        </div>
+
+        <!-- ================= CHAPTER 2 ================= -->
+        <h2 class="chapter-heading">Chapter 2: Functions of Management</h2>
+
+        <div class="table-title">1. Planning vs. Organizing</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Planning</th>
+                        <th>Organizing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>Planning is deciding in advance what to do, how to do it, when to do it and who is to do it.</td>
+                        <td>Organising is the process of defining and grouping the activities of the enterprise and establishing the authority relationships among them.</td>
+                    </tr>
+                    <tr>
+                        <td>Objective</td>
+                        <td>To set goals and choosing the means to achieve these goals.</td>
+                        <td>To identify and bring together all required resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Area of function</td>
+                        <td>It includes setting objectives by identifying the ways of attaining the goal and selecting the best plan.</td>
+                        <td>It includes identification and grouping of activities, assigning the work and establishing the authority relationship.</td>
+                    </tr>
+                    <tr>
+                        <td>Factors</td>
+                        <td>Internal and external factors are considered in planning process.</td>
+                        <td>Internal and external factors are considered in arrangement of resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Order</td>
+                        <td>It is the basic first function of management process.</td>
+                        <td>It follows planning.</td>
+                    </tr>
+                    <tr>
+                        <td>Resources</td>
+                        <td>Planning is done as per the requirement and availability of resources.</td>
+                        <td>All available resources i.e. men, money, material, machine and method are arranged in a systematic manner.</td>
+                    </tr>
+                    <tr>
+                        <td>Nature</td>
+                        <td>It is continuous in nature. It exists in the whole life of organization.</td>
+                        <td>It takes place till the time all the resources are collected and arranged.</td>
+                    </tr>
+                    <tr>
+                        <td>Level of Management</td>
+                        <td>Top management is concerned with planning the activities.</td>
+                        <td>Top and middle level management is related with organizing the required resources.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">2. Organizing vs. Staffing</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Organizing</th>
+                        <th>Staffing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>Organising is the process of defining and grouping the activities of the enterprise and establishing the authority relationships among them.</td>
+                        <td>The staffing function pertains to the recruitment, selection, development, training and compensation of subordinate managers.</td>
+                    </tr>
+                    <tr>
+                        <td>Objective</td>
+                        <td>To identify and bring together all required resources.</td>
+                        <td>To appoint right type of people at the right positions and the right time.</td>
+                    </tr>
+                    <tr>
+                        <td>Area of function</td>
+                        <td>It includes identification and grouping of activities, assigning the work and establishing the authority relationship.</td>
+                        <td>It includes recruitment, selection, training, development and compensation of human resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Factors</td>
+                        <td>Internal and external factors are considered in arrangement of resources.</td>
+                        <td>Staffing is mostly concerned with internal factors.</td>
+                    </tr>
+                    <tr>
+                        <td>Order</td>
+                        <td>It follows planning.</td>
+                        <td>It follows organizing function.</td>
+                    </tr>
+                    <tr>
+                        <td>Resources</td>
+                        <td>All available resources i.e. men, money, material, machine and method are arranged in a systematic manner.</td>
+                        <td>It is the process relating to organization of human resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Nature</td>
+                        <td>It takes place till the time all the resources are collected and arranged.</td>
+                        <td>It is a continuous process as it deals with employees i.e. human resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Level of Management</td>
+                        <td>Top and middle level management is related with organizing the required resources.</td>
+                        <td>Middle level management is related with recruitment, training and selection. Top level is concerned with promotion and compensation.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">3. Staffing vs. Directing</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Staffing</th>
+                        <th>Directing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>The staffing function pertains to the recruitment, selection, development, training and compensation of subordinate managers.</td>
+                        <td>Directing is the guidance, inspiration, the leadership of those men and women that constitute the real case of responsibilities of management.</td>
+                    </tr>
+                    <tr>
+                        <td>Objective</td>
+                        <td>To appoint right type of people at the right positions and the right time.</td>
+                        <td>To direct the subordinates to get the things done in the right manner.</td>
+                    </tr>
+                    <tr>
+                        <td>Area of function</td>
+                        <td>It includes recruitment, selection, training, development and compensation of human resources.</td>
+                        <td>It includes instructing, guiding, inspiring, communicating and motivating the human resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Factors</td>
+                        <td>Staffing is mostly concerned with internal factors.</td>
+                        <td>Directing is concerned directly with internal factors i.e. human resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Order</td>
+                        <td>It follows organizing function.</td>
+                        <td>It follows organising and staffing for execution of planning.</td>
+                    </tr>
+                    <tr>
+                        <td>Nature</td>
+                        <td>It is a continuous process as it deals with employees i.e. human resources.</td>
+                        <td>This continuous process is necessary in the process of achievement of the goals.</td>
+                    </tr>
+                    <tr>
+                        <td>Level of Management</td>
+                        <td>Middle level management is related with recruitment, training and selection. Top level is concerned with promotion and compensation.</td>
+                        <td>Middle level management is involved in directing the employees.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">4. Directing vs. Controlling</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Directing</th>
+                        <th>Controlling</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>Directing is the guidance, inspiration, the leadership of those men and women that constitute the real case of responsibilities of management.</td>
+                        <td>Controlling is the process of taking steps to bring actual results and desired results closer together.</td>
+                    </tr>
+                    <tr>
+                        <td>Objective</td>
+                        <td>To direct the subordinates to get the things done in the right manner.</td>
+                        <td>To ensure that the objectives are achieved according to the plan.</td>
+                    </tr>
+                    <tr>
+                        <td>Area of function</td>
+                        <td>It includes instructing, guiding, inspiring, communicating and motivating the human resources.</td>
+                        <td>It includes setting up of standards, measurement, and comparison with actual performance and taking corrective steps whenever necessary.</td>
+                    </tr>
+                    <tr>
+                        <td>Factors</td>
+                        <td>Directing is concerned directly with internal factors i.e. human resources.</td>
+                        <td>Internal and external factors are taken into account for taking corrective action.</td>
+                    </tr>
+                    <tr>
+                        <td>Order</td>
+                        <td>It follows organising and staffing for execution of planning.</td>
+                        <td>It is an end function of management process.</td>
+                    </tr>
+                    <tr>
+                        <td>Nature</td>
+                        <td>This continuous process is necessary in the process of achievement of the goals.</td>
+                        <td>It is the process which starts once the actual plan is executed.</td>
+                    </tr>
+                    <tr>
+                        <td>Level of Management</td>
+                        <td>Middle level management is involved in directing the employees.</td>
+                        <td>Top and middle level management are responsible for controlling the activities.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">5. Co-ordinating vs. Controlling</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Coordinating</th>
+                        <th>Controlling</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>Coordination is orderly arrangement of group efforts to provide unity of action in the pursuit of common goal.</td>
+                        <td>Controlling is the process of taking steps to bring actual results and desired results closer together.</td>
+                    </tr>
+                    <tr>
+                        <td>Objective</td>
+                        <td>To ensure harmony of efforts of the employees for smooth functioning of organization.</td>
+                        <td>To ensure that the objectives are achieved according to the plan.</td>
+                    </tr>
+                    <tr>
+                        <td>Area of function</td>
+                        <td>It includes integration of efforts of top level, middle level and lower level. It is harmonization of human resources.</td>
+                        <td>It includes setting up of standards, measurement, and comparison with actual performance and taking corrective steps whenever necessary.</td>
+                    </tr>
+                    <tr>
+                        <td>Order</td>
+                        <td>It is an important element of organizing which follows planning.</td>
+                        <td>It is an end function of management process.</td>
+                    </tr>
+                    <tr>
+                        <td>Nature</td>
+                        <td>This is a continuous process related to all managerial levels.</td>
+                        <td>It is the process which starts once the actual plan is executed.</td>
+                    </tr>
+                    <tr>
+                        <td>Level of Management</td>
+                        <td>It is related to all the levels of management to achieve the goal of organization.</td>
+                        <td>Top and middle level management are responsible for controlling the activities.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">6. Planning vs. Controlling</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Planning</th>
+                        <th>Controlling</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>Planning is deciding in advance what to do, how to do it, when to do it and who is to do it.</td>
+                        <td>Controlling is the process of taking steps to bring actual results and desired results closer together.</td>
+                    </tr>
+                    <tr>
+                        <td>Objective</td>
+                        <td>To set goals and choosing the means to achieve these goals.</td>
+                        <td>To ensure that the objectives are achieved according to the plan.</td>
+                    </tr>
+                    <tr>
+                        <td>Area of function</td>
+                        <td>It includes setting objectives by identifying the ways of attaining the goal and selecting the best plan.</td>
+                        <td>It includes setting up of standards, measurement, and comparison with actual performance and taking corrective steps whenever necessary.</td>
+                    </tr>
+                    <tr>
+                        <td>Factors</td>
+                        <td>Internal and external factors are considered in planning process.</td>
+                        <td>Internal and external factors are taken into account for taking corrective action.</td>
+                    </tr>
+                    <tr>
+                        <td>Order</td>
+                        <td>It is the basic first function of management process.</td>
+                        <td>It is an end function of management process.</td>
+                    </tr>
+                    <tr>
+                        <td>Resources</td>
+                        <td>Planning is done as per the requirement and availability of resources.</td>
+                        <td>It is related to all resources which help organizational to achieve goal of organization.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">7. Organising vs. Directing</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Organizing</th>
+                        <th>Directing</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>Organising is the process of defining and grouping the activities of the enterprise and establishing the authority relationships among them.</td>
+                        <td>Directing is the guidance, inspiration, the leadership of those men and women that constitute the real case of responsibilities of management.</td>
+                    </tr>
+                    <tr>
+                        <td>Objective</td>
+                        <td>To identify and bring together all required resources.</td>
+                        <td>To direct the subordinates to get the things done in the right manner.</td>
+                    </tr>
+                    <tr>
+                        <td>Order</td>
+                        <td>It follows planning.</td>
+                        <td>It follows organising and staffing for execution of planning.</td>
+                    </tr>
+                    <tr>
+                        <td>Resources</td>
+                        <td>All available resources i.e. men, money, material, machine and method are arranged in a systematic manner.</td>
+                        <td>It gives direction to the employees regarding use of other resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Nature</td>
+                        <td>It takes place till the time all the resources are collected and arranged.</td>
+                        <td>This continuous process is necessary in the process of achievement of the goals.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">8. Organising vs. Co-ordinating</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Organizing</th>
+                        <th>Coordinating</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>Organising is the process of defining and grouping the activities of the enterprise and establishing the authority relationships among them.</td>
+                        <td>Coordination is orderly arrangement of group efforts to provide unity of action in the pursuit of common goal.</td>
+                    </tr>
+                    <tr>
+                        <td>Objective</td>
+                        <td>To identify and bring together all required resources.</td>
+                        <td>To ensure harmony of efforts of the employees for smooth functioning of organization.</td>
+                    </tr>
+                    <tr>
+                        <td>Area of function</td>
+                        <td>It includes identification and grouping of activities, assigning the work and establishing the authority relationship.</td>
+                        <td>It includes integration of efforts of top level, middle level and lower level. It is harmonization of human resources.</td>
+                    </tr>
+                    <tr>
+                        <td>Order</td>
+                        <td>It follows planning.</td>
+                        <td>It is an important element of organizing which follows planning.</td>
+                    </tr>
+                    <tr>
+                        <td>Level of Management</td>
+                        <td>Top and middle level management is related with organizing the required resources.</td>
+                        <td>It is related to all the levels of management to achieve the goal of organization.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- ================= CHAPTER 4 ================= -->
+        <h2 class="chapter-heading">Chapter 4: Business Services</h2>
+
+        <div class="table-title">9. Duty Paid Warehouse vs. Bonded Warehouse</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Duty Paid Warehouse</th>
+                        <th>Bonded Warehouse</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>If an importer faces any problem in transportation of goods, after making payment of duty, then goods can be stored at a duty paid warehouse.</td>
+                        <td>Bonded warehouses are licensed by the government to accept imported goods for storage until the payment of custom duty.</td>
+                    </tr>
+                    <tr>
+                        <td>Control</td>
+                        <td>All duty paid warehouses are public warehouses which are available to all importers.</td>
+                        <td>These warehouses work under the control of custom authorities.</td>
+                    </tr>
+                    <tr>
+                        <td>Removal of goods</td>
+                        <td>Goods can be withdrawn as the duty has already been paid. Proper care of goods is taken, and processing of goods can be done like sorting, re-packing etc.</td>
+                        <td>The goods are held in bond and cannot be withdrawn without paying the custom duty or without the consent of custom authorities.</td>
+                    </tr>
+                    <tr>
+                        <td>Usefulness</td>
+                        <td>Such warehouses are more useful for re-export of the goods.</td>
+                        <td>He can withdraw the goods in installments by paying the customs duty proportionately.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">10. Central Bank vs. Commercial Bank</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Central Bank</th>
+                        <th>Commercial Bank</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Function</td>
+                        <td>The main function of the central bank (RBI) is to regulate the money supply in the country.</td>
+                        <td>The main function is to accept deposits from public for lending to industry and others.</td>
+                    </tr>
+                    <tr>
+                        <td>Printing of currency</td>
+                        <td>The central bank can print currency notes.</td>
+                        <td>The commercial banks cannot print currency.</td>
+                    </tr>
+                    <tr>
+                        <td>Acceptance of deposits</td>
+                        <td>The Central Bank does not accept deposits from public.</td>
+                        <td>The commercial bank accept deposits from public.</td>
+                    </tr>
+                    <tr>
+                        <td>Loans</td>
+                        <td>The Central bank provide loans to bankers and financial institutions.</td>
+                        <td>The commercial banks provide loan to industry and commerce.</td>
+                    </tr>
+                    <tr>
+                        <td>Ownership</td>
+                        <td>It is owned and controlled by the government of India.</td>
+                        <td>It can be owned by private and/or by the government agencies.</td>
+                    </tr>
+                    <tr>
+                        <td>Number of banks</td>
+                        <td>There is only one Central Bank (RBI) in India.</td>
+                        <td>There are many commercial banks in India.</td>
+                    </tr>
+                    <tr>
+                        <td>Monetary policy</td>
+                        <td>The Central Bank frames the monetary and credit policy.</td>
+                        <td>The commercial banks do not frame any monetary policy.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">11. Road Transport vs. Air Transport</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Road Transport</th>
+                        <th>Air Transport</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Speed</td>
+                        <td>Road transport has limited speed due to bad road condition, accidents, etc.</td>
+                        <td>It is the fastest mode of transport.</td>
+                    </tr>
+                    <tr>
+                        <td>Carrying capacity</td>
+                        <td>It has limited carrying capacity.</td>
+                        <td>It has limited carrying capacity.</td>
+                    </tr>
+                    <tr>
+                        <td>Cost</td>
+                        <td>It requires limited capital investment in terms of construction of roads, vehicles and maintenance.</td>
+                        <td>It uses airways which are natural and hence, there is no cost involved. However huge cost of constructions of aircrafts involved. These costs are way high compared to other modes of transport.</td>
+                    </tr>
+                    <tr>
+                        <td>Distance</td>
+                        <td>Recommended for short distance.</td>
+                        <td>Suitable for long distance.</td>
+                    </tr>
+                    <tr>
+                        <td>Charges</td>
+                        <td>Transport charges are not fixed due to high due to increased fuel prices.</td>
+                        <td>Transport charge are very high.</td>
+                    </tr>
+                    <tr>
+                        <td>Door to door service</td>
+                        <td>It provides door to door services.</td>
+                        <td>It does not provide door to door services.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">12. Life Insurance vs. Marine Insurance</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Life Insurance</th>
+                        <th>Marine Insurance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>A contract where by the insurance company undertakes to pay a certain sum of money either on death or maturity (whichever is earlier) for a consideration (premium).</td>
+                        <td>A contract where by the insurance company undertakes to pay compensation to insured in case of loss to him due to dangers (perils) of the sea.</td>
+                    </tr>
+                    <tr>
+                        <td>Policy taken by</td>
+                        <td>It can be taken by an individual for his own life or for his family members.</td>
+                        <td>It can be taken by exporters, importers and shipping companies etc.</td>
+                    </tr>
+                    <tr>
+                        <td>Subject matter</td>
+                        <td>In life insurance, the life of the insured is a subject matter.</td>
+                        <td>In Marine insurance, goods in ship, cargo and freight is the subject matter.</td>
+                    </tr>
+                    <tr>
+                        <td>Insurable Interest</td>
+                        <td>It must exist at the time of contract.</td>
+                        <td>It must exist at the time of contract and also at the time of loss.</td>
+                    </tr>
+                    <tr>
+                        <td>Principle of Indemnity</td>
+                        <td>It is not applicable as a human life cannot be valued in terms of money for calculating the actual loss.</td>
+                        <td>It is applicable as company compensates for the financial loss and the insured is brought back to the same financial condition that he was before the event.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">13. Savings Account vs. Current Account</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Saving Account</th>
+                        <th>Current Account</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>It is that account which is opened by individuals in order to save a part of their income.</td>
+                        <td>It is that account which is maintained by business man and others who have regular bank transactions.</td>
+                    </tr>
+                    <tr>
+                        <td>Withdrawals</td>
+                        <td>Customers can withdraw either by cheques or by withdrawal slips.</td>
+                        <td>Customers can withdraw money by cheques.</td>
+                    </tr>
+                    <tr>
+                        <td>Who takes it</td>
+                        <td>It is suitable for fixed income group, wages or salary earners.</td>
+                        <td>It is suitable for traders, businessman, firms or institutions.</td>
+                    </tr>
+                    <tr>
+                        <td>Restrictions</td>
+                        <td>The customer have certain restrictions on withdrawals.</td>
+                        <td>There are no restrictions on the operation of a current account as long as there is balance in the account.</td>
+                    </tr>
+                    <tr>
+                        <td>Interest Rate</td>
+                        <td>Interest rate is low.</td>
+                        <td>Normally interest is not given.</td>
+                    </tr>
+                    <tr>
+                        <td>Facilities</td>
+                        <td>No overdraft facility is given.</td>
+                        <td>Temporary overdraw facility is given.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">14. Life Insurance vs. Fire Insurance</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Life Insurance</th>
+                        <th>Fire Insurance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>A contract where by the insurance company undertakes to pay a certain sum of money either on death or maturity for a consideration.</td>
+                        <td>A contract in which insurer promises to pay compensation to insured if something happens to the subject matter due to fire or related events.</td>
+                    </tr>
+                    <tr>
+                        <td>Subject matter</td>
+                        <td>In life insurance, the life of the insured is a subject matter.</td>
+                        <td>In Fire insurance, the goods and assets or property of the insured is the subject matter.</td>
+                    </tr>
+                    <tr>
+                        <td>Insurable Interest</td>
+                        <td>It must exist at the time of contract.</td>
+                        <td>It must exist both at the time of contract and also at the time of loss.</td>
+                    </tr>
+                    <tr>
+                        <td>Tenure</td>
+                        <td>The policy can be issued for any number of years, even until the death of the assured.</td>
+                        <td>It is generally for a short period like one year.</td>
+                    </tr>
+                    <tr>
+                        <td>Principle of Indemnity</td>
+                        <td>It is not applicable as a human life cannot be valued in terms of money for calculating the actual loss.</td>
+                        <td>It is applicable as insurance company compensates for the financial loss and the insured is brought back to the same financial condition.</td>
+                    </tr>
+                    <tr>
+                        <td>Surrender of policy</td>
+                        <td>The policy can be surrendered before the expiry of the term subject to certain conditions.</td>
+                        <td>It cannot be surrendered.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">15. Road Transport vs. Rail Transport</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Road Transport</th>
+                        <th>Rail Transport</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Speed</td>
+                        <td>Road transport has limited speed due to bad road condition, accidents, etc.</td>
+                        <td>It has considerable speed since it runs on tracks which rarely gets disturbed.</td>
+                    </tr>
+                    <tr>
+                        <td>Cost</td>
+                        <td>It requires limited capital investment in terms of construction of roads, vehicles and maintenance.</td>
+                        <td>The cost of construction of trains, railway tracks is high. Also the maintenance of trains, tracks and stations is high.</td>
+                    </tr>
+                    <tr>
+                        <td>Distance</td>
+                        <td>Recommended for short distance.</td>
+                        <td>Recommended for both short and long distance.</td>
+                    </tr>
+                    <tr>
+                        <td>Door to door service</td>
+                        <td>It provides door to door services.</td>
+                        <td>It does not provide door to door services.</td>
+                    </tr>
+                    <tr>
+                        <td>Suitability</td>
+                        <td>It is suitable for transporting the goods in relatively smaller quantities for short distance.</td>
+                        <td>It is suitable for transporting heavy goods in large quantity over long distance.</td>
+                    </tr>
+                    <tr>
+                        <td>Safety</td>
+                        <td>It provides limited safety to goods from the sun, rain, wind, etc.</td>
+                        <td>Goods are kept in locked wagons which provide protection against sun, wind, rain, etc.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">16. Rail Transport vs. Air Transport</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Rail Transport</th>
+                        <th>Air Transport</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Speed</td>
+                        <td>It has considerable speed since it runs on tracks which rarely gets disturbed.</td>
+                        <td>It is the fastest mode of transport.</td>
+                    </tr>
+                    <tr>
+                        <td>Carrying capacity</td>
+                        <td>It has huge carrying capacity.</td>
+                        <td>It has limited carrying capacity.</td>
+                    </tr>
+                    <tr>
+                        <td>Distance</td>
+                        <td>Recommended for both short and long distance.</td>
+                        <td>Suitable for long distance.</td>
+                    </tr>
+                    <tr>
+                        <td>Suitability</td>
+                        <td>It is suitable for transporting heavy goods in large quantity over long distance.</td>
+                        <td>It is suitable for transporting light weight perishable and valuable goods to any part of the world.</td>
+                    </tr>
+                    <tr>
+                        <td>Ownership</td>
+                        <td>Ownership is in the hands of the Government.</td>
+                        <td>It is owned by both private sector as well as public sector.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">17. Current Account vs. Fixed Deposit Account</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Current Account</th>
+                        <th>Fixed Deposit Account</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>It is that account which is maintained by business man and others who have regular bank transactions.</td>
+                        <td>It is that account where a fixed sum of money is deposited for a fixed period.</td>
+                    </tr>
+                    <tr>
+                        <td>Withdrawals</td>
+                        <td>Customers can withdraw money by cheques.</td>
+                        <td>Customers cannot withdraw during the specified period.</td>
+                    </tr>
+                    <tr>
+                        <td>Who takes it</td>
+                        <td>It is suitable for traders, businessman, firms or institutions.</td>
+                        <td>It is suitable for any person with temporary idle cash.</td>
+                    </tr>
+                    <tr>
+                        <td>Restrictions</td>
+                        <td>There are no restrictions on the operation of a current account as long as there is balance in the account.</td>
+                        <td>Amount becomes due on the expiry of the fixed period. If withdrawn earlier, then the rate of interest will be less than applicable.</td>
+                    </tr>
+                    <tr>
+                        <td>Interest Rate</td>
+                        <td>Normally interest is not given.</td>
+                        <td>Interest rate is higher, longer the period, higher will be the rate of interest.</td>
+                    </tr>
+                    <tr>
+                        <td>Nature of account</td>
+                        <td>It is of continuous Nature.</td>
+                        <td>It is for fixed period of time except when the fixed deposit receipt is renewed.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">18. Fire Insurance vs. Marine Insurance</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Fire Insurance</th>
+                        <th>Marine Insurance</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>A contract in which insurer promises to pay compensation to insured if something happens to the subject matter due to fire or related events.</td>
+                        <td>A contract where by the insurance company undertakes to pay compensation to insured in case of loss to him due to dangers (perils) of the sea.</td>
+                    </tr>
+                    <tr>
+                        <td>Policy taken by</td>
+                        <td>It can be taken by individual for their properties or by businessman for their goods, properties, business liabilities.</td>
+                        <td>It can be taken by exporters, importers and shipping companies etc.</td>
+                    </tr>
+                    <tr>
+                        <td>Subject matter</td>
+                        <td>In Fire insurance, the goods and assets or property of the insured is the subject matter.</td>
+                        <td>In Marine insurance, goods in ship, cargo and freight is the subject matter.</td>
+                    </tr>
+                    <tr>
+                        <td>Insurable Interest</td>
+                        <td>It must exist both at the time of contract and also at the time of loss.</td>
+                        <td>It must exist at the time of contract and also at the time of loss.</td>
+                    </tr>
+                    <tr>
+                        <td>Tenure</td>
+                        <td>It is generally for a short period like one year.</td>
+                        <td>It is generally for a short period and may range from one month to a year. Normally it does not exceed one year.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">19. Saving Account vs. Fixed Deposit Account</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Saving Account</th>
+                        <th>Fixed Deposit Account</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>It is that account which is opened by individuals in order to save a part of their income.</td>
+                        <td>It is that account where a fixed sum of money is deposited for a fixed period.</td>
+                    </tr>
+                    <tr>
+                        <td>Withdrawals</td>
+                        <td>Customers can withdraw either by cheques or by withdrawal slips.</td>
+                        <td>Customers cannot withdraw during the specified period.</td>
+                    </tr>
+                    <tr>
+                        <td>Who takes it</td>
+                        <td>It is suitable for fixed income group, wages or salary earners.</td>
+                        <td>It is suitable for any person with temporary idle cash.</td>
+                    </tr>
+                    <tr>
+                        <td>Restrictions</td>
+                        <td>The customer have certain restrictions on withdrawals.</td>
+                        <td>Amount becomes due on the expiry of the fixed period. If withdrawn earlier, then the rate of interest will be less.</td>
+                    </tr>
+                    <tr>
+                        <td>Interest Rate</td>
+                        <td>Interest rate is low.</td>
+                        <td>Interest rate is higher, longer the period, higher will be the rate of interest.</td>
+                    </tr>
+                    <tr>
+                        <td>Nature of account</td>
+                        <td>It is of continuous Nature.</td>
+                        <td>It is for fixed period of time except when the fixed deposit receipt is renewed.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">20. Water Transport vs. Air Transport</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Water Transport</th>
+                        <th>Air Transport</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Speed</td>
+                        <td>It is the slowest mode of transport.</td>
+                        <td>It is the fastest mode of transport.</td>
+                    </tr>
+                    <tr>
+                        <td>Carrying capacity</td>
+                        <td>It has away huge carrying capacity.</td>
+                        <td>It has limited carrying capacity.</td>
+                    </tr>
+                    <tr>
+                        <td>Cost</td>
+                        <td>It uses waterways which are natural highway and hence there is no cost involved. However there is high cost involved for construction of ships and maintenance.</td>
+                        <td>It uses airways which are natural and hence, there is no cost involved. However huge cost of constructions of aircrafts involved. These costs are way high.</td>
+                    </tr>
+                    <tr>
+                        <td>Suitability</td>
+                        <td>It is suitable for transporting way heavy goods, machineries in large quantities to any part of the world.</td>
+                        <td>It is suitable for transporting light weight perishable and valuable goods to any part of the world.</td>
+                    </tr>
+                    <tr>
+                        <td>Accidents</td>
+                        <td>Chances of accidents are less in waterways.</td>
+                        <td>Chances of accidents are less because of maintenance and expert pilots.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ================= CHAPTER 8 ================= -->
+        <h2 class="chapter-heading">Chapter 8: Marketing</h2>
+
+        <div class="table-title">21. Marketing vs. Selling</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Marketing</th>
+                        <th>Selling</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>Marketing is a social process by which a need is created, offered and exchanged via products.</td>
+                        <td>Selling means providing the customer with the good he/she needs in exchange of a price.</td>
+                    </tr>
+                    <tr>
+                        <td>Concept</td>
+                        <td>Marketing is a wider concept. It includes Selling and other functions.</td>
+                        <td>Selling is a narrower concept. It is a part of the marketing concept.</td>
+                    </tr>
+                    <tr>
+                        <td>Focus</td>
+                        <td>Satisfaction of consumers is the essence of the marketing concept.</td>
+                        <td>The selling concept relies on the transfer of title and possession of the product from one person to another.</td>
+                    </tr>
+                    <tr>
+                        <td>Orientation</td>
+                        <td>Marketing is consumer oriented. It emphasizes on consumers and the maximization of their satisfaction.</td>
+                        <td>Selling is production oriented. It emphasizes on production and its efficiency.</td>
+                    </tr>
+                    <tr>
+                        <td>View on Customer</td>
+                        <td>Marketing views the customer as the very purpose of the business.</td>
+                        <td>Selling views customer as a last link in business.</td>
+                    </tr>
+                    <tr>
+                        <td>Planning</td>
+                        <td>Planning in marketing is long-term-oriented in today's products and in terms of few products, tomorrow's markets and future growth.</td>
+                        <td>Planning in selling is short-term-oriented in terms of today's products and markets.</td>
+                    </tr>
+                    <tr>
+                        <td>Approach</td>
+                        <td>Marketing follows customer oriented approach.</td>
+                        <td>Selling uses production oriented approach.</td>
+                    </tr>
+                    <tr>
+                        <td>Activity</td>
+                        <td>Marketing is an indirect activity.</td>
+                        <td>Selling is a direct activity.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">22. Wholesale Market vs. Retail Market</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Wholesale Market</th>
+                        <th>Retail Market</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>It refers to the market for bulk purchase and sale of goods.</td>
+                        <td>Retail market is the market where retailer sells goods directly to the consumer in small quantities.</td>
+                    </tr>
+                    <tr>
+                        <td>Quantity</td>
+                        <td>The activity of buying and selling goods is undertaken in large quantities.</td>
+                        <td>The activity of buying and selling goods is undertaken in small quantities.</td>
+                    </tr>
+                    <tr>
+                        <td>Prices</td>
+                        <td>Goods are sold at cheaper prices.</td>
+                        <td>Goods are sold at relatively higher prices compared to wholesale.</td>
+                    </tr>
+                    <tr>
+                        <td>Parties Involved</td>
+                        <td>In such a market sellers are known as wholesalers and buyers are known as retailers.</td>
+                        <td>In such a market sellers are known as retailers and buyers are the ultimate consumers.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="table-title">23. Perfect Market vs. Imperfect Market</div>
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Points</th>
+                        <th>Perfect Market</th>
+                        <th>Imperfect Market</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Meaning</td>
+                        <td>Perfect market is a market where large number of buyers and sellers buy and sell their homogeneous products.</td>
+                        <td>Imperfect Market refers to a market situation which is characterised by market imperfection such as single seller, maladjustment in demand and supply.</td>
+                    </tr>
+                    <tr>
+                        <td>Number of Sellers</td>
+                        <td>There are a large number of buyers and sellers.</td>
+                        <td>There may be a single seller (Monopoly), two sellers (Duopoly), or a few sellers (Oligopoly).</td>
+                    </tr>
+                    <tr>
+                        <td>Knowledge</td>
+                        <td>Buyers and sellers have perfect knowledge about market conditions.</td>
+                        <td>It is characterised by imperfect knowledge on the part of buyers or sellers.</td>
+                    </tr>
+                    <tr>
+                        <td>Pricing</td>
+                        <td>Because of perfect knowledge and homogeneous products, one single price prevails in the market.</td>
+                        <td>The seller may control the supply and can fix the price, leading to different prices.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div> <!-- End Main Wrapper -->
+
+    <!-- Scroll Tracking SVG Arrow (No shadow, bottom right) -->
+    <button id="backToTop" onclick="scrollToTop()">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <footer>
+        Created by Gagan Nishad
+    </footer>
+
+    <script>
+        // Menu Toggle
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburger');
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target) && mobileMenu.classList.contains('open')) {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // Back to Top Logic (Scroll Only)
+        let isScrolling;
+        window.addEventListener('scroll', function (event) {
+            const topBtn = document.getElementById("backToTop");
+            window.clearTimeout(isScrolling);
+            
+            if (window.scrollY > 200) {
+                topBtn.style.opacity = "1";
+                topBtn.style.visibility = "visible";
+            } else {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }
+
+            isScrolling = setTimeout(function() {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }, 1200); 
+        }, false);
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Security Lockouts
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('copy', event => event.preventDefault());
+        document.addEventListener('cut', event => event.preventDefault());
+        document.addEventListener('paste', event => event.preventDefault());
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "F12" || e.keyCode === 44) {
+                e.preventDefault(); return false;
+            }
+            if (e.ctrlKey || e.metaKey) {
+                const key = e.key.toLowerCase();
+                if (['c', 'a', 'x', 'v', 'p', 'u', 's', 'i', '+', '-', '='].includes(key)) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        document.addEventListener('wheel', function(e) {
+            if (e.ctrlKey || e.metaKey) e.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(event) {
+            if (event.scale !== 1 && event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) event.preventDefault();
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>

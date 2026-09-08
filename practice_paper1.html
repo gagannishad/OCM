@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
+    <title>Practice Paper 1 | OCM Study Portal</title>
+    <meta name="theme-color" content="#F9F5FF">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <style>
+        /* =========================================
+           GLOBAL SECURITY & FLAT CSS RESET (NO SHADOWS, NO BOXES)
+           ========================================= */
+        :root {
+            --bg-page: #F9F5FF; 
+            --nav-bg: rgba(249, 245, 255, 0.95); 
+            --text-main: #2E1065; 
+            --text-muted: #6B21A8;
+            --purple-primary: #9333EA; 
+            --purple-light: rgba(147, 51, 234, 0.12);
+            --divider: rgba(147, 51, 234, 0.25);
+            --correct: #16a34a;
+        }
+
+        *, *::before, *::after { 
+            box-sizing: border-box; 
+            margin: 0; 
+            padding: 0; 
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        body {
+            width: 100%; 
+            min-height: 100vh;
+            background-color: var(--bg-page);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Poppins", sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Navigation - FLAT DESIGN */
+        nav {
+            position: sticky; top: 0; width: 100%; height: 65px;
+            background-color: var(--nav-bg);
+            backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 24px; z-index: 1000;
+            border-bottom: 1px solid var(--divider);
+        }
+        .nav-brand { font-size: 20px; font-weight: 700; color: var(--purple-primary); letter-spacing: -0.01em; }
+        
+        .hamburger { width: 24px; height: 18px; display: flex; flex-direction: column; justify-content: space-between; cursor: pointer; z-index: 1002; }
+        .hamburger span { display: block; height: 2.5px; width: 100%; background-color: var(--purple-primary); border-radius: 3px; transition: all 0.4s ease; transform-origin: left center; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(1px, -1px); }
+        .hamburger.active span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(1px, 1px); }
+
+        .mobile-menu {
+            position: absolute; top: 75px; right: 20px; width: 250px;
+            background-color: var(--bg-page); border-radius: 16px;
+            border: 1px solid var(--divider); padding: 10px; display: flex; flex-direction: column;
+            transform-origin: top right; transform: scale(0.8) translateY(-20px); opacity: 0; visibility: hidden;
+            transition: all 0.4s ease; z-index: 1001;
+        }
+        .mobile-menu.open { transform: scale(1) translateY(0); opacity: 1; visibility: visible; }
+        .mobile-menu a {
+            text-decoration: none; color: var(--text-main); font-size: 15px; font-weight: 600;
+            padding: 12px 16px; border-radius: 10px; transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+        }
+        .mobile-menu a:active, .mobile-menu a:hover { background-color: var(--purple-light); color: var(--purple-primary); transform: translateX(5px); }
+
+        /* Main Content - Merged with screen, NO BOXES */
+        .main-wrapper { max-width: 950px; margin: 0 auto; padding: 40px 24px 80px; flex: 1; width: 100%; }
+
+        .paper-header {
+            text-align: center; margin-bottom: 40px;
+            border-bottom: 3px solid var(--purple-primary);
+            padding-bottom: 25px;
+        }
+        .college-title { font-size: 15px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: var(--text-muted); margin-bottom: 8px; }
+        .paper-header h1 { font-size: 30px; font-weight: 800; color: var(--text-main); margin-bottom: 5px; }
+        .paper-header h2 { font-size: 22px; font-weight: 600; color: var(--purple-primary); margin-bottom: 12px; }
+        .exam-meta { display: flex; justify-content: space-between; font-size: 16px; font-weight: 700; color: var(--text-main); margin-top: 15px; text-transform: uppercase; }
+
+        /* Section Headings */
+        .part-heading {
+            font-size: 26px; color: var(--text-main); 
+            margin-top: 55px; margin-bottom: 25px; 
+            font-weight: 800;
+            border-bottom: 2px solid var(--purple-primary);
+            padding-bottom: 8px;
+        }
+        
+        .q-header {
+            display: flex; justify-content: space-between; align-items: baseline;
+            font-size: 19px; color: var(--purple-primary);
+            margin-top: 40px; margin-bottom: 15px;
+            font-weight: 700;
+            border-left: 4px solid var(--purple-primary);
+            padding-left: 10px;
+        }
+
+        .marks-badge {
+            font-size: 14px; font-weight: 700; color: var(--text-muted);
+        }
+
+        /* Question & Solution Content */
+        .qa-block {
+            padding: 18px 0;
+            border-bottom: 1px dashed var(--divider);
+            font-size: 15.5px;
+            line-height: 1.8;
+            color: #333;
+        }
+        .qa-block:last-child { border-bottom: none; }
+        .q-sub {
+            font-weight: 600; color: var(--text-main); display: block; margin-bottom: 8px;
+        }
+        .sol-label {
+            font-weight: 700; color: var(--correct); display: block; margin-top: 6px;
+        }
+        .ans-body {
+            display: block; text-align: justify; margin-top: 6px;
+        }
+        .ans-body strong { color: var(--purple-primary); }
+
+        ol, ul { padding-left: 20px; margin: 8px 0; }
+        li { margin-bottom: 6px; }
+
+        /* Flat Tables */
+        .table-container {
+            width: 100%;
+            overflow-x: auto;
+            margin: 15px 0 25px;
+            border: 1px solid var(--divider);
+            background-color: transparent;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        th, td {
+            border: 1px solid var(--divider);
+            padding: 14px;
+            text-align: left;
+            vertical-align: top;
+            font-size: 14.5px;
+            line-height: 1.6;
+            color: #333;
+        }
+        th {
+            background-color: var(--purple-light);
+            color: var(--purple-primary);
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 13.5px;
+        }
+        td:first-child {
+            font-weight: 600;
+            color: var(--text-main);
+            background-color: rgba(147, 51, 234, 0.04);
+            width: 18%;
+        }
+
+        /* SVG Back to Top Arrow - Extreme Bottom Right */
+        #backToTop {
+            position: fixed; bottom: 15px; right: 15px; width: 45px; height: 45px;
+            background-color: var(--purple-primary); color: white; border: none;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center; 
+            z-index: 2000; cursor: pointer;
+            opacity: 0; visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        #backToTop svg {
+            width: 22px; height: 22px; fill: none; stroke: currentColor; stroke-width: 3; stroke-linecap: round; stroke-linejoin: round;
+        }
+
+        footer { text-align: center; padding: 24px; font-size: 15px; color: var(--text-muted); border-top: 1px solid var(--divider); font-weight: 500; margin-top: auto; background-color: transparent; }
+    </style>
+</head>
+<body ondragstart="return false;" ondrop="return false;">
+
+    <!-- Navigation Menu (8 Links) -->
+    <nav>
+        <div class="nav-brand">OCM Study Portal</div>
+        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        
+        <div class="mobile-menu" id="mobileMenu">
+            <a href="index.html" onclick="toggleMenu()">Syllabus & Pattern</a>
+            <a href="true_false.html" onclick="toggleMenu()">1. True or False</a>
+            <a href="odd_one.html" onclick="toggleMenu()">2. Find the Odd One</a>
+            <a href="explain_terms.html" onclick="toggleMenu()">3. Explain Terms</a>
+            <a href="case_study.html" onclick="toggleMenu()">4. Case Studies</a>
+            <a href="distinguish.html" onclick="toggleMenu()">5. Distinguish Between</a>
+            <a href="answer_following.html" onclick="toggleMenu()">6. Answer the Following</a>
+            <a href="practice_paper1.html" style="color: var(--purple-primary);" onclick="toggleMenu()">Practice Paper 1</a>
+            <a href="practice_paper2.html" onclick="toggleMenu()">Practice Paper 2</a>
+        </div>
+    </nav>
+
+    <div class="main-wrapper">
+        
+        <!-- Header -->
+        <div class="paper-header">
+            <div class="college-title">Nirmala Memorial Foundation College of Commerce and Science</div>
+            <h1>SYJC Commerce &bull; 2nd Monthly Test</h1>
+            <h2>Organisation of Commerce and Management (OCM)</h2>
+            <div class="exam-meta">
+                <span>Time: 2 Hours</span>
+                <span>Practice Mock Paper 1</span>
+                <span>Max Marks: 50</span>
+            </div>
+        </div>
+
+        <p style="text-align: center; font-weight: 600; color: var(--purple-primary); margin-bottom: 40px;">
+            Syllabus Covered: Chapter 2 (Functions of Management), Chapter 4 (Business Services), Chapter 8 (Marketing)
+        </p>
+
+        <!-- ================= Q.1 A ================= -->
+        <div class="q-header">
+            <span>Q.1 (A) State whether the following statements are True or False:</span>
+            <span class="marks-badge">[05 Marks]</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">1. Every function of management is based on planning.</span>
+            <span class="sol-label">Answer: True</span>
+            <span class="ans-body">Planning is the basic, fundamental function of management upon which all other subsequent functions like organizing, staffing, directing, coordinating, and controlling depend.</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">2. Overdraft facility is available to savings bank account holders.</span>
+            <span class="sol-label">Answer: False</span>
+            <span class="ans-body">The overdraft facility is a temporary credit arrangement provided strictly to current deposit account holders to support regular commercial operations.</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">3. The term market is derived from the Latin word 'mercatus'.</span>
+            <span class="sol-label">Answer: True</span>
+            <span class="ans-body">'Mercatus' translates to trade, trade merchandise, or a place where commercial business transactions take place.</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">4. The Principle of Indemnity is applicable to life insurance policies.</span>
+            <span class="sol-label">Answer: False</span>
+            <span class="ans-body">The principle of indemnity cannot be applied to life insurance contracts because human life cannot be evaluated or measured in monetary terms.</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">5. Staffing emphasizes managing human resources rather than material or financial resources.</span>
+            <span class="sol-label">Answer: True</span>
+            <span class="ans-body">Staffing is concerned with recruiting, selecting, training, developing, compensating, and retaining the best human workforce in an organization.</span>
+        </div>
+
+
+        <!-- ================= Q.1 B ================= -->
+        <div class="q-header">
+            <span>Q.1 (B) Find the odd one out:</span>
+            <span class="marks-badge">[05 Marks]</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">1. Planning, Organizing, Staffing, Writing.</span>
+            <span class="sol-label">Answer: Writing</span>
+            <span class="ans-body">Planning, Organizing, and Staffing are primary managerial functions, whereas Writing is an operational activity.</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">2. Primary Credit Societies, District Central Co-operative Bank, State Co-operative Bank, Exchange Bank.</span>
+            <span class="sol-label">Answer: Exchange Bank</span>
+            <span class="ans-body">Primary Credit Societies, District Central Co-operative Banks, and State Co-operative Banks constitute the three-tier cooperative banking structure, while Exchange Banks specialize in foreign trade financing.</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">3. Price, People, Promotion, Product.</span>
+            <span class="sol-label">Answer: People</span>
+            <span class="ans-body">Price, Promotion, and Product are parts of the traditional 4Ps of the Product Marketing Mix, whereas People belongs to the extended 3Ps of the Service Marketing Mix.</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">4. Selecting, Training, Co-ordinating, Placing.</span>
+            <span class="sol-label">Answer: Co-ordinating</span>
+            <span class="ans-body">Selecting, Training, and Placing are sequential steps involved in Staffing, while Co-ordinating is a separate core management function.</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">5. Whole Life Policy, Endowment Policy, Term Policy, Floating Policy.</span>
+            <span class="sol-label">Answer: Floating Policy</span>
+            <span class="ans-body">Whole Life, Endowment, and Term policies are life insurance contracts, while Floating Policy is a type of fire insurance.</span>
+        </div>
+
+
+        <!-- ================= Q.2 ================= -->
+        <div class="q-header">
+            <span>Q.2 Explain the following terms/concepts (Any 5 out of 6):</span>
+            <span class="marks-badge">[10 Marks]</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">1. POSDCORB</span>
+            <span class="ans-body">
+                POSDCORB is an acronym formulated by management thinker Luther Gullick to summarize the core functions of management. In this keyword:
+                <ul>
+                    <li><strong>P:</strong> Planning - deciding goals and courses of action in advance.</li>
+                    <li><strong>O:</strong> Organizing - bringing together and structuring physical, financial, and human resources.</li>
+                    <li><strong>S:</strong> Staffing - recruiting, selecting, training, and compensating personnel.</li>
+                    <li><strong>D:</strong> Directing - instructing, guiding, motivating, and leading subordinates.</li>
+                    <li><strong>Co:</strong> Coordinating - harmonizing and integrating departmental efforts.</li>
+                    <li><strong>R:</strong> Reporting - keeping executives informed through reports (part of controlling).</li>
+                    <li><strong>B:</strong> Budgeting - fiscal planning, accounting, and expenditure control (part of controlling).</li>
+                </ul>
+            </span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">2. Principle of Subrogation</span>
+            <span class="ans-body">
+                The Principle of Subrogation is applicable to all contracts of indemnity (fire, marine, and general insurance). According to this principle, once the insured has been fully compensated for the loss or damage to their insured property, the complete rights of ownership of that damaged property or salvage transfer to the insurer. The insured cannot claim ownership over the damaged property after receiving full settlement, as doing so would allow them to profit from a loss.
+            </span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">3. Marketing Mix</span>
+            <span class="ans-body">
+                The Marketing Mix is the combination of controllable marketing variables that a business firm blends and harmonizes to achieve desired objectives from a target market. It involves placing the right product, at the right time, at the right price, in the right place. Originally introduced by E. Jerome McCarthy as the 4Ps (Product, Price, Place, Promotion), it was expanded by Booms & Bitner to 7Ps for services by adding People, Process, and Physical Environment.
+            </span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">4. Real Time Gross Settlement (RTGS)</span>
+            <span class="ans-body">
+                RTGS is an electronic funds transfer system operated through the banking channel where the transmission and settlement of money take place on a "real time" and "gross" basis. "Real Time" means transactions are settled immediately without waiting periods, and the beneficiary bank must credit the client's account within 2 hours of receiving the message. "Gross Settlement" means each transaction is settled individually without bundling. The minimum remittance amount via RTGS is Rs. 2 Lakhs.
+            </span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">5. Directing</span>
+            <span class="ans-body">
+                Directing is considered the "life spark" and soul of the management process. It is the continuous managerial function initiated at the top level and flowing down the hierarchy. Directing involves instructing, guiding, communicating with, inspiring, supervising, and motivating employees to work toward organizational goals. It is the function that initiates action, coordinates efforts, and improves workplace morale.
+            </span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">6. Bonded Warehouse</span>
+            <span class="ans-body">
+                A bonded warehouse is a specialized storage facility licensed by the government to store imported goods until the appropriate customs duties are cleared by the importer. These warehouses operate under strict customs authority supervision. Importers who cannot or do not wish to pay the full customs duty at once can store goods in a bonded warehouse and withdraw them in smaller lots by paying customs duty proportionately.
+            </span>
+        </div>
+
+
+        <!-- ================= Q.3 ================= -->
+        <div class="q-header">
+            <span>Q.3 Study the following case/situation and express your opinion (Any 2 out of 3):</span>
+            <span class="marks-badge">[06 Marks]</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">Case 1: Management Roles in a New Business</span>
+            <p style="margin-bottom: 8px;">
+                Mr. Ram, an emerging entrepreneur, has designed a structure for his business organization by taking into consideration the required resources such as land, money, machinery, workforce etc., for his new business. He appointed Mr. Shyam as a manager. Mr. Ram has assigned responsibilities such as recruitment, selection, training and development, and determining the remuneration of employees to Mr. Shyam. Mr. Ram also appointed Mr. Shubham to supervise the work done by the employees according to the standards given to them. Mr. Shubham also suggests remedies to the employees wherever necessary.
+            </p>
+            <div style="padding-left: 10px;">
+                <p><strong>i. Find out the management function performed by Mr. Ram.</strong><br>
+                <span class="ans-body"><strong>Answer:</strong> Mr. Ram is performing the function of <strong>Organizing</strong> because he is arranging required physical, financial, and human resources and structuring the enterprise.</span></p>
+                <p><strong>ii. Find out the management function performed by Mr. Shyam.</strong><br>
+                <span class="ans-body"><strong>Answer:</strong> Mr. Shyam is performing the function of <strong>Staffing</strong> because he is responsible for recruiting, selecting, training, developing, and deciding the compensation of the workforce.</span></p>
+                <p><strong>iii. Find out the management function performed by Mr. Shubham.</strong><br>
+                <span class="ans-body"><strong>Answer:</strong> Mr. Shubham is performing the function of <strong>Controlling</strong> because he evaluates performance against set standards and suggests corrective actions/remedies where deviations occur.</span></p>
+            </div>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">Case 2: Industrial Safety & Logistics</span>
+            <p style="margin-bottom: 8px;">
+                Mr. Sharan is a successful manufacturer having production units at various locations. He has a large stock of raw materials and finished goods. He is worried about safeguarding goods from unwanted financial losses. He also requires transferring raw materials and finished goods from one unit to another but lacks his own transport fleet. Furthermore, he requires short-term funds for business expansion.
+            </p>
+            <div style="padding-left: 10px;">
+                <p><strong>i. Name the service which will help him safeguard goods from any damage and financial loss.</strong><br>
+                <span class="ans-body"><strong>Answer:</strong> <strong>Insurance Service</strong> (Fire/Marine Insurance) to hedge against financial loss, and <strong>Warehousing Service</strong> for safe physical storage.</span></p>
+                <p><strong>ii. Which service will help him remove the difficulty of place?</strong><br>
+                <span class="ans-body"><strong>Answer:</strong> <strong>Transportation Service</strong> (Road or Rail transport) will remove the difficulty of place by carrying materials between his units.</span></p>
+                <p><strong>iii. From which service sector will he get financial support?</strong><br>
+                <span class="ans-body"><strong>Answer:</strong> <strong>Banking Service</strong> (Commercial or Development Banks) will provide financial assistance in the form of loans and advances.</span></p>
+            </div>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">Case 3: Consumer Purchasing Patterns</span>
+            <p style="margin-bottom: 8px;">
+                Mr. X purchases fresh vegetables and dairy from the nearest local corner shop. Mr. Y orders smartphones directly from Tokyo, Japan. Mr. Z living in Nandurbar purchases bulk industrial electronic components manufactured in Delhi.
+            </p>
+            <div style="padding-left: 10px;">
+                <p><strong>i. From which type of market does Mr. X purchase?</strong><br>
+                <span class="ans-body"><strong>Answer:</strong> Mr. X purchases from a <strong>Local Market / Very Short Period Retail Market</strong>.</span></p>
+                <p><strong>ii. Name the type of market from where Mr. Y deals.</strong><br>
+                <span class="ans-body"><strong>Answer:</strong> Mr. Y deals in an <strong>International / Global Market</strong>.</span></p>
+                <p><strong>iii. State the type of market from where Mr. Z purchases goods.</strong><br>
+                <span class="ans-body"><strong>Answer:</strong> Mr. Z purchases goods from a <strong>National Market / Wholesale Market</strong>.</span></p>
+            </div>
+        </div>
+
+
+        <!-- ================= Q.4 ================= -->
+        <div class="q-header">
+            <span>Q.4 Distinguish between (Any 4 out of 5):</span>
+            <span class="marks-badge">[16 Marks]</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">1. Planning vs. Controlling</span>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Points</th>
+                            <th>Planning</th>
+                            <th>Controlling</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Meaning</td>
+                            <td>Planning is deciding in advance what to do, how to do it, when to do it, and who is to do it.</td>
+                            <td>Controlling is the process of taking steps to bring actual results and desired results closer together.</td>
+                        </tr>
+                        <tr>
+                            <td>Objective</td>
+                            <td>To set organizational goals and choose the best courses of action to accomplish them.</td>
+                            <td>To ensure that actual operations conform to pre-planned standards and targets.</td>
+                        </tr>
+                        <tr>
+                            <td>Order in Process</td>
+                            <td>It is the basic, fundamental first function of the management process.</td>
+                            <td>It is the final, end function of the management cycle that provides feedback.</td>
+                        </tr>
+                        <tr>
+                            <td>Nature</td>
+                            <td>It is forward-looking and continuous; establishes future guidelines.</td>
+                            <td>It looks backward to compare results and forward to suggest corrective actions.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">2. Commercial Bank vs. Central Bank</span>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Points</th>
+                            <th>Commercial Bank</th>
+                            <th>Central Bank (RBI)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Primary Function</td>
+                            <td>Accepts deposits from the general public and provides loans to trade, industry, and commerce.</td>
+                            <td>Regulates money supply, oversees the banking system, and issues currency notes.</td>
+                        </tr>
+                        <tr>
+                            <td>Currency Issuance</td>
+                            <td>Cannot print or issue currency notes.</td>
+                            <td>Has the sole monopoly power to print and issue currency notes in the country.</td>
+                        </tr>
+                        <tr>
+                            <td>Public Dealing</td>
+                            <td>Deals directly with individual citizens, businessmen, and corporate entities.</td>
+                            <td>Does not deal directly with the public; acts as banker to the government and other banks.</td>
+                        </tr>
+                        <tr>
+                            <td>Monetary Policy</td>
+                            <td>Does not frame monetary policy; operates under RBI guidelines.</td>
+                            <td>Formulates, controls, and monitors the monetary and credit policy of the nation.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">3. Life Insurance vs. Fire Insurance</span>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Points</th>
+                            <th>Life Insurance</th>
+                            <th>Fire Insurance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Subject Matter</td>
+                            <td>The life of the insured person is the subject matter.</td>
+                            <td>Physical assets, buildings, machinery, and goods are the subject matter.</td>
+                        </tr>
+                        <tr>
+                            <td>Principle of Indemnity</td>
+                            <td>Not applicable because the financial value of human life cannot be determined.</td>
+                            <td>Strictly applicable; compensation is limited to the actual financial loss or insured amount.</td>
+                        </tr>
+                        <tr>
+                            <td>Insurable Interest</td>
+                            <td>Must exist at the time of entering into the life insurance contract.</td>
+                            <td>Must exist both at the time of taking the policy and at the time of loss by fire.</td>
+                        </tr>
+                        <tr>
+                            <td>Policy Tenure</td>
+                            <td>Long-term contract; can be issued for 10, 20, 30 years or till death.</td>
+                            <td>Short-term contract; usually taken for a period of one year.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">4. Road Transport vs. Rail Transport</span>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Points</th>
+                            <th>Road Transport</th>
+                            <th>Rail Transport</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Door-to-Door Service</td>
+                            <td>Provides direct door-to-door delivery from origin to final destination.</td>
+                            <td>Does not provide door-to-door service; requires feeder transport from stations.</td>
+                        </tr>
+                        <tr>
+                            <td>Carrying Capacity</td>
+                            <td>Has limited carrying capacity per vehicle.</td>
+                            <td>Has massive carrying capacity to transport heavy bulk goods in large quantities.</td>
+                        </tr>
+                        <tr>
+                            <td>Distance Suitability</td>
+                            <td>Economical and suitable for short distances and hilly/rural terrains.</td>
+                            <td>Most dependable and economical for transporting goods and passengers over long distances.</td>
+                        </tr>
+                        <tr>
+                            <td>Capital Cost</td>
+                            <td>Requires relatively lower initial investment in vehicles and local roads.</td>
+                            <td>Requires massive capital investment for rail tracks, engines, rolling stock, and stations.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">5. Marketing vs. Selling</span>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Points</th>
+                            <th>Marketing</th>
+                            <th>Selling</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Orientation</td>
+                            <td>Customer-oriented; focuses on identifying and satisfying consumer needs.</td>
+                            <td>Production-oriented; focuses on maximizing factory output and clearing stock.</td>
+                        </tr>
+                        <tr>
+                            <td>Scope</td>
+                            <td>Wider concept; begins before production and continues after sales service.</td>
+                            <td>Narrower concept; begins after goods are manufactured and ends with sales transfer.</td>
+                        </tr>
+                        <tr>
+                            <td>View of Customer</td>
+                            <td>Views the consumer as the central focus and purpose of all business activities.</td>
+                            <td>Views the customer merely as the final link in the transaction process.</td>
+                        </tr>
+                        <tr>
+                            <td>Aim / Objective</td>
+                            <td>Earning profits through customer satisfaction and long-term brand equity.</td>
+                            <td>Maximizing sales volume and immediate revenue through promotional pressure.</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+
+        <!-- ================= Q.5 ================= -->
+        <div class="q-header">
+            <span>Q.5 Answer the following in detail (Any 1 out of 2):</span>
+            <span class="marks-badge">[08 Marks]</span>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">Option 1: Define the term 'Planning' and explain its importance in detail.</span>
+            <div class="ans-body">
+                <strong>Definition:</strong> According to Koontz and O'Donnell, "Planning is deciding in advance what to do, how to do it, when to do it, and who is to do it. Planning bridges the gap from where we are and where we want to go. It makes possible things to occur which would not otherwise occur."
+                <br><br>
+                <strong>Importance of Planning:</strong>
+                <ol>
+                    <li><strong>Helps to set clear objectives:</strong> Planning is concerned with setting objectives, targets, and formulating plans to achieve them. It forces managers to analyze the present condition of the enterprise and systematically outline pathways to reach desired future states.</li>
+                    <li><strong>Provides path of action:</strong> By clearly establishing organizational goals, planning serves as a roadmap. It guides personnel on what organization has to do and what employees must do, ensuring right actions at the right time.</li>
+                    <li><strong>Planning improves performance:</strong> It establishes predetermined benchmarks and guidelines for tasks. This allows managers to organize workflows systematically, leading to operational efficiency and higher corporate profitability.</li>
+                    <li><strong>Minimizes the risk of future uncertainty:</strong> Business environments are subject to continuous change. Planning utilizes forecasting techniques to anticipate market shifts, competition, and economic risks, enabling managers to adopt preventive measures to cushion against unexpected events.</li>
+                    <li><strong>Leads to optimum utilization of resources:</strong> Plans are designed taking into account the exact availability of men, money, materials, and machinery. Proper allocation ensures resources are utilized efficiently, preventing idle time and reducing material wastage.</li>
+                    <li><strong>Helps in decision making:</strong> Managers face multiple operational and strategic choices. Planning involves identifying alternatives, weighing their pros and cons, and selecting the most rational and profitable course of action.</li>
+                    <li><strong>Useful in setting standards for controlling:</strong> Controlling requires benchmarks to measure actual performance against targets. Planning sets these standards, making it possible to identify deviations, evaluate accountability, and take corrective remedies.</li>
+                    <li><strong>Promotes innovative ideas:</strong> Planning is an intellectual process involving logical thought, market foresight, and creative decision making. It encourages managers to develop innovative processes and competitive business strategies.</li>
+                </ol>
+            </div>
+        </div>
+
+        <div class="qa-block">
+            <span class="q-sub">Option 2: What is 'Insurance'? Explain any six fundamental principles of insurance.</span>
+            <div class="ans-body">
+                <strong>Meaning:</strong> Insurance is a contract between the insurer and the insured, whereby the insurer agrees to indemnify the insured against financial losses arising from uncertain contingent events, in consideration of a fixed periodic sum called premium.
+                <br><br>
+                <strong>Fundamental Principles of Insurance:</strong>
+                <ol>
+                    <li><strong>Principle of Utmost Good Faith (Uberrimae Fidei):</strong> In all insurance contracts, both the insurer and the insured must display complete honesty and transparency. The insured must disclose all material facts regarding the subject matter accurately (e.g., medical conditions, hazardous materials). Non-disclosure renders the contract voidable.</li>
+                    <li><strong>Principle of Insurable Interest:</strong> The insured must possess a direct financial interest in the preservation of the subject matter. Insurable interest means the individual benefits financially from its existence and suffers a direct financial loss from its damage or destruction. In life insurance, it must exist at the time of the contract; in fire and marine, it must exist at the time of loss as well.</li>
+                    <li><strong>Principle of Indemnity:</strong> Applicable to contracts of general insurance (fire, marine, motor). It ensures that the insured is placed in the exact same financial position after a loss as they were immediately prior to the event. The insured cannot recover more than the actual loss suffered or the sum insured, preventing insurance from being used as a source of profit. (Not applicable to life insurance).</li>
+                    <li><strong>Principle of Subrogation:</strong> An extension of indemnity. Once an insurance company compensates the insured fully for damaged property, all rights of ownership over the remaining salvage or recovered goods transfer to the insurer. The insurer can scrap or sell the remains to recover part of the payout.</li>
+                    <li><strong>Principle of Contribution:</strong> When the insured takes multiple policies from different insurance companies covering the same subject matter and risk, all insurers contribute proportionately to pay for the actual loss. The insured cannot claim full compensation from every insurer to accumulate profit.</li>
+                    <li><strong>Principle of Mitigation of Loss:</strong> The insured must take all reasonable and necessary steps to minimize the loss or damage to the insured property when an accident occurs. An insured party cannot remain passive or negligent during a fire simply because the property is covered by insurance.</li>
+                    <li><strong>Principle of Causa-Proxima (Nearest Cause):</strong> When a loss occurs due to a combination of multiple causes, the direct, immediate, and most proximate cause is considered to determine liability. If the proximate cause is covered under the policy terms, the insurer is legally bound to compensate the insured.</li>
+                </ol>
+            </div>
+        </div>
+
+    </div> <!-- End Main Wrapper -->
+
+    <!-- Scroll Tracking SVG Arrow -->
+    <button id="backToTop" onclick="scrollToTop()">
+        <svg viewBox="0 0 24 24">
+            <path d="M12 19V5M5 12l7-7 7 7"/>
+        </svg>
+    </button>
+
+    <footer>
+        Created by Gagan Nishad
+    </footer>
+
+    <script>
+        // Menu Toggle
+        function toggleMenu() {
+            const hamburger = document.getElementById('hamburger');
+            const mobileMenu = document.getElementById('mobileMenu');
+            hamburger.classList.toggle('active');
+            mobileMenu.classList.toggle('open');
+        }
+
+        document.addEventListener('click', function(event) {
+            const mobileMenu = document.getElementById('mobileMenu');
+            const hamburger = document.getElementById('hamburger');
+            if (!mobileMenu.contains(event.target) && !hamburger.contains(event.target) && mobileMenu.classList.contains('open')) {
+                mobileMenu.classList.remove('open');
+                hamburger.classList.remove('active');
+            }
+        });
+
+        // Back to Top Logic (Scroll Only)
+        let isScrolling;
+        window.addEventListener('scroll', function (event) {
+            const topBtn = document.getElementById("backToTop");
+            window.clearTimeout(isScrolling);
+            
+            if (window.scrollY > 200) {
+                topBtn.style.opacity = "1";
+                topBtn.style.visibility = "visible";
+            } else {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }
+
+            isScrolling = setTimeout(function() {
+                topBtn.style.opacity = "0";
+                topBtn.style.visibility = "hidden";
+            }, 1200); 
+        }, false);
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Security Lockouts
+        document.addEventListener('contextmenu', event => event.preventDefault());
+        document.addEventListener('copy', event => event.preventDefault());
+        document.addEventListener('cut', event => event.preventDefault());
+        document.addEventListener('paste', event => event.preventDefault());
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === "F12" || e.keyCode === 44) {
+                e.preventDefault(); return false;
+            }
+            if (e.ctrlKey || e.metaKey) {
+                const key = e.key.toLowerCase();
+                if (['c', 'a', 'x', 'v', 'p', 'u', 's', 'i', '+', '-', '='].includes(key)) {
+                    e.preventDefault();
+                }
+            }
+        });
+
+        document.addEventListener('wheel', function(e) {
+            if (e.ctrlKey || e.metaKey) e.preventDefault();
+        }, { passive: false });
+        
+        document.addEventListener('touchmove', function(event) {
+            if (event.scale !== 1 && event.touches.length > 1) {
+                event.preventDefault();
+            }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function (event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) event.preventDefault();
+            lastTouchEnd = now;
+        }, false);
+    </script>
+</body>
+</html>
